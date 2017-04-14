@@ -22,13 +22,13 @@ import com.badlogic.gdx.math.Vector3;
  *  - implement a and b keys
  */
 
-class Controls implements InputProcessor {
+public class Controls implements InputProcessor {
 
     //On Screen Controls
     private Texture up, down, right, left, primary, secondary;
     private Rectangle upBound, downBound, rightBound, leftBound;
     private Direction directionPressed;
-    private enum Direction {
+    public enum Direction {
         UP, DOWN, LEFT, RIGHT, NONE;
     }
     private int upPointer, downPointer, rightPointer, leftPointer;
@@ -43,7 +43,7 @@ class Controls implements InputProcessor {
     //Logging
     private final String TAG = "LOGDUNERPG"; //todo: remove
 
-    Controls(float width, float height, OrthographicCamera mainCamera) {
+    public Controls(float width, float height, OrthographicCamera mainCamera) {
         Gdx.app.setLogLevel(Application.LOG_DEBUG); //todo: remove
 
         if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
@@ -76,7 +76,7 @@ class Controls implements InputProcessor {
         directionPressed = Direction.NONE;
     }
 
-    void draw(SpriteBatch spriteBatch) {
+    public void draw(SpriteBatch spriteBatch) {
         if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
             spriteBatch.setProjectionMatrix(controlCamera.projection);
             spriteBatch.draw(up, upBound.getX(), upBound.getY(), upBound.getWidth(), upBound.getHeight());
@@ -89,19 +89,19 @@ class Controls implements InputProcessor {
 
         switch (directionPressed) {
             case LEFT:
-                mainCamera.translate(-16, 0);
+                mainCamera.translate(-4, 0);
                 Gdx.app.debug(TAG, "LEFT Button Pressed");
                 break;
             case RIGHT:
-                mainCamera.translate(16, 0);
+                mainCamera.translate(4, 0);
                 Gdx.app.debug(TAG, "RIGHT Button Pressed");
                 break;
             case UP:
-                mainCamera.translate(0, 16);
+                mainCamera.translate(0, 4);
                 Gdx.app.debug(TAG, "UP Button Pressed");
                 break;
             case DOWN:
-                mainCamera.translate(0, -16);
+                mainCamera.translate(0, -4);
                 Gdx.app.debug(TAG, "DOWN Button Pressed");
                 break;
         }
@@ -236,13 +236,43 @@ class Controls implements InputProcessor {
         return false;
     }
 
-    void dispose() {
-        up.dispose();
-        down.dispose();
-        left.dispose();
-        right.dispose();
-        primary.dispose();
-        secondary.dispose();
+
+
+    public Direction getDirectionPressed() {
+        return directionPressed;
+    }
+
+    public void setDirectionPressed(Direction directionPressed) {
+        this.directionPressed = directionPressed;
+    }
+
+    public boolean isPrimaryPressed() {
+        return primaryPressed;
+    }
+
+    public void setPrimaryPressed(boolean primaryPressed) {
+        this.primaryPressed = primaryPressed;
+    }
+
+    public boolean isSecondaryPressed() {
+        return secondaryPressed;
+    }
+
+    public void setSecondaryPressed(boolean secondaryPressed) {
+        this.secondaryPressed = secondaryPressed;
+    }
+
+    public void dispose() {
+        try {
+            up.dispose();
+            down.dispose();
+            left.dispose();
+            right.dispose();
+            primary.dispose();
+            secondary.dispose();
+        } catch (NullPointerException e) {
+            //I mean, like if they're empty, then don't dispose them... what does it matter?
+        }
     }
 
     @Override
