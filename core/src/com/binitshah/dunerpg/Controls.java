@@ -27,11 +27,14 @@ class Controls implements InputProcessor {
     //On Screen Controls
     private Texture up, down, right, left, primary, secondary;
     private Rectangle upBound, downBound, rightBound, leftBound;
-    private boolean upBoundPressed, downBoundPressed, rightBoundPressed, leftBoundPressed = false;
-    private int upBoundPointer, downBoundPointer, rightBoundPointer, leftBoundPointer;
+    private Direction directionPressed;
+    private enum Direction {
+        UP, DOWN, LEFT, RIGHT, NONE;
+    }
+    private int upPointer, downPointer, rightPointer, leftPointer;
     private Circle primaryBound, secondaryBound;
-    private boolean primaryBoundPressed, secondaryBoundPressed = false;
-    private int primaryBoundPointer, secondaryBoundPointer;
+    private boolean primaryPressed, secondaryPressed = false;
+    private int primaryPointer, secondaryPointer;
 
     //Rendering
     private OrthographicCamera controlCamera;
@@ -43,172 +46,193 @@ class Controls implements InputProcessor {
     Controls(float width, float height, OrthographicCamera mainCamera) {
         Gdx.app.setLogLevel(Application.LOG_DEBUG); //todo: remove
 
-        //textures
-        up = new Texture("up.png");
-        down = new Texture("down.png");
-        left = new Texture("left.png");
-        right = new Texture("right.png");
-        primary = new Texture("primary.png");
-        secondary = new Texture("secondary.png");
+        if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+            //textures
+            up = new Texture("up.png");
+            down = new Texture("down.png");
+            left = new Texture("left.png");
+            right = new Texture("right.png");
+            primary = new Texture("primary.png");
+            secondary = new Texture("secondary.png");
 
-        //bounds
-        float rectLargerDimension = 43.6065f * width/height;
-        float rectSmallerDimension = 35 * width/height;
-        float circleRadius = 20 * width/height;
-        upBound = new Rectangle(-width*0.25f - rectSmallerDimension/2, -height*0.22f - rectLargerDimension/2 + (rectSmallerDimension*0.7f), rectSmallerDimension, rectLargerDimension);
-        downBound = new Rectangle(-width*0.25f - rectSmallerDimension/2, -height*0.22f - rectLargerDimension/2 + (-rectSmallerDimension*0.7f), rectSmallerDimension, rectLargerDimension);
-        leftBound = new Rectangle(-width*0.25f - rectLargerDimension/2 + (-rectSmallerDimension*0.7f), -height*0.22f - rectSmallerDimension/2, rectLargerDimension, rectSmallerDimension);
-        rightBound = new Rectangle(-width*0.25f - rectLargerDimension/2 + (rectSmallerDimension*0.7f), -height*0.22f - rectSmallerDimension/2, rectLargerDimension, rectSmallerDimension);
-        primaryBound = new Circle(width*0.28f - circleRadius + (-circleRadius*0.8f), -height*0.22f - circleRadius + (circleRadius*0.8f), circleRadius);
-        secondaryBound = new Circle(width*0.28f - circleRadius + (circleRadius*0.8f), -height*0.22f - circleRadius + (-circleRadius*0.8f), circleRadius);
+            //bounds
+            float rectLargerDimension = 43.6065f * width / height;
+            float rectSmallerDimension = 35 * width / height;
+            float circleRadius = 18 * width / height;
+            upBound = new Rectangle(-width * 0.25f - rectSmallerDimension / 2 - 45, -height * 0.22f - rectLargerDimension / 2 + (rectSmallerDimension * 0.7f) + 10, rectSmallerDimension, rectLargerDimension);
+            downBound = new Rectangle(-width * 0.25f - rectSmallerDimension / 2 - 45, -height * 0.22f - rectLargerDimension / 2 + (-rectSmallerDimension * 0.7f) + 10, rectSmallerDimension, rectLargerDimension);
+            leftBound = new Rectangle(-width * 0.25f - rectLargerDimension / 2 + (-rectSmallerDimension * 0.7f) - 45, -height * 0.22f - rectSmallerDimension / 2 + 10, rectLargerDimension, rectSmallerDimension);
+            rightBound = new Rectangle(-width * 0.25f - rectLargerDimension / 2 + (rectSmallerDimension * 0.7f) - 45, -height * 0.22f - rectSmallerDimension / 2 + 10, rectLargerDimension, rectSmallerDimension);
+            primaryBound = new Circle(width * 0.28f - circleRadius + (-circleRadius * 0.8f) + 70, -height * 0.22f - circleRadius + (circleRadius * 0.8f) + 30, circleRadius);
+            secondaryBound = new Circle(width * 0.28f - circleRadius + (circleRadius * 0.8f) + 70, -height * 0.22f - circleRadius + (-circleRadius * 0.8f) + 30, circleRadius);
 
-        //cameras
+            //camera
+            this.controlCamera = new OrthographicCamera(width, height);
+            this.controlCamera.position.set(width/2, height/2, 0);
+        }
+
+        //more camera
         this.mainCamera = mainCamera;
-        this.controlCamera = new OrthographicCamera(width, height);
-        this.controlCamera.position.set(width/2, height/2, 0);
+        directionPressed = Direction.NONE;
     }
 
     void draw(SpriteBatch spriteBatch) {
-        spriteBatch.setProjectionMatrix(controlCamera.projection);
-        spriteBatch.draw(up, upBound.getX(), upBound.getY(), upBound.getWidth(), upBound.getHeight());
-        spriteBatch.draw(down, downBound.getX(), downBound.getY(), downBound.getWidth(), downBound.getHeight());
-        spriteBatch.draw(left, leftBound.getX(), leftBound.getY(), leftBound.getWidth(), leftBound.getHeight());
-        spriteBatch.draw(right, rightBound.getX(), rightBound.getY(), rightBound.getWidth(), rightBound.getHeight());
-        spriteBatch.draw(primary, primaryBound.x, primaryBound.y, primaryBound.radius * 2, primaryBound.radius * 2);
-        spriteBatch.draw(secondary, secondaryBound.x, secondaryBound.y, secondaryBound.radius * 2, secondaryBound.radius * 2);
-        if (leftBoundPressed) {
-            mainCamera.translate(-16, 0);
+        if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+            spriteBatch.setProjectionMatrix(controlCamera.projection);
+            spriteBatch.draw(up, upBound.getX(), upBound.getY(), upBound.getWidth(), upBound.getHeight());
+            spriteBatch.draw(down, downBound.getX(), downBound.getY(), downBound.getWidth(), downBound.getHeight());
+            spriteBatch.draw(left, leftBound.getX(), leftBound.getY(), leftBound.getWidth(), leftBound.getHeight());
+            spriteBatch.draw(right, rightBound.getX(), rightBound.getY(), rightBound.getWidth(), rightBound.getHeight());
+            spriteBatch.draw(primary, primaryBound.x - primaryBound.radius, primaryBound.y - primaryBound.radius, primaryBound.radius * 2, primaryBound.radius * 2);
+            spriteBatch.draw(secondary, secondaryBound.x - secondaryBound.radius, secondaryBound.y - secondaryBound.radius, secondaryBound.radius * 2, secondaryBound.radius * 2);
         }
-        if (rightBoundPressed) {
-            mainCamera.translate(16, 0);
+
+        switch (directionPressed) {
+            case LEFT:
+                mainCamera.translate(-16, 0);
+                Gdx.app.debug(TAG, "LEFT Button Pressed");
+                break;
+            case RIGHT:
+                mainCamera.translate(16, 0);
+                Gdx.app.debug(TAG, "RIGHT Button Pressed");
+                break;
+            case UP:
+                mainCamera.translate(0, 16);
+                Gdx.app.debug(TAG, "UP Button Pressed");
+                break;
+            case DOWN:
+                mainCamera.translate(0, -16);
+                Gdx.app.debug(TAG, "DOWN Button Pressed");
+                break;
         }
-        if (upBoundPressed) {
-            mainCamera.translate(0, 16);
-        }
-        if (downBoundPressed) {
-            mainCamera.translate(0, -16);
-        }
-        if (primaryBoundPressed) {
+
+        if (primaryPressed) {
             Gdx.app.debug(TAG, "Primary Button Pressed");
         }
-        if (secondaryBoundPressed) {
+        if (secondaryPressed) {
             Gdx.app.debug(TAG, "Secondary Button Pressed");
         }
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        Gdx.app.debug(TAG, "Key Down:: keycode: " + keycode);
+        //Directional
         if (keycode == Input.Keys.LEFT) {
-            leftBoundPressed = true;
+            directionPressed = Direction.LEFT;
+            return true;
         }
         if (keycode == Input.Keys.RIGHT) {
-            rightBoundPressed = true;
+            directionPressed = Direction.RIGHT;
+            return true;
         }
         if (keycode == Input.Keys.UP) {
-            upBoundPressed = true;
+            directionPressed = Direction.UP;
+            return true;
         }
         if (keycode == Input.Keys.DOWN) {
-            downBoundPressed = true;
+            directionPressed = Direction.DOWN;
+            return true;
         }
+
+        //Action
         if (keycode == Input.Keys.A) {
-            primaryBoundPressed = true;
+            primaryPressed = true;
+            return true;
         }
         if (keycode == Input.Keys.S) {
-            secondaryBoundPressed = true;
+            secondaryPressed = true;
+            return true;
         }
+
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        Gdx.app.debug(TAG, "Key Up:: keycode: " + keycode);
+        //Directional
         if (keycode == Input.Keys.LEFT) {
-            leftBoundPressed = false;
+            directionPressed = Direction.NONE;
+            return true;
         }
         if (keycode == Input.Keys.RIGHT) {
-            rightBoundPressed = false;
+            directionPressed = Direction.NONE;
+            return true;
         }
         if (keycode == Input.Keys.UP) {
-            upBoundPressed = false;
+            directionPressed = Direction.NONE;
+            return true;
         }
         if (keycode == Input.Keys.DOWN) {
-            downBoundPressed = false;
+            directionPressed = Direction.NONE;
+            return true;
         }
+
+        //Action
         if (keycode == Input.Keys.A) {
-            primaryBoundPressed = false;
+            primaryPressed = false;
+            return true;
         }
         if (keycode == Input.Keys.S) {
-            secondaryBoundPressed = false;
+            secondaryPressed = false;
+            return true;
         }
-        return false;
-    }
 
-    @Override
-    public boolean keyTyped(char character) {
-        Gdx.app.debug(TAG, "Key Typed:: character: " + ((int) character));
         return false;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Gdx.app.debug(TAG, "Touch Down:: screenX: " + screenX + " | screenY: " + screenY + " | pointer: " + pointer + " | button: " + button);
+        if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+            Vector3 touchPoint = new Vector3(screenX, screenY, 0);
+            controlCamera.unproject(touchPoint);
+            //Gdx.app.debug(TAG, "TouchPoint:: screenX: " + touchPoint.x + " | screenY: " + touchPoint.y);
+            if (leftBound.contains(touchPoint.x, touchPoint.y)) {
+                directionPressed = Direction.LEFT;
+                leftPointer = pointer;
+            }
+            if (rightBound.contains(touchPoint.x, touchPoint.y)) {
+                directionPressed = Direction.RIGHT;
+                rightPointer = pointer;
+            }
+            if (upBound.contains(touchPoint.x, touchPoint.y)) {
+                directionPressed = Direction.UP;
+                upPointer = pointer;
+            }
+            if (downBound.contains(touchPoint.x, touchPoint.y)) {
+                directionPressed = Direction.DOWN;
+                downPointer = pointer;
+            }
+            if (primaryBound.contains(touchPoint.x, touchPoint.y)) {
+                primaryPressed = true;
+                primaryPointer = pointer;
+            }
+            if (secondaryBound.contains(touchPoint.x, touchPoint.y)) {
+                secondaryPressed = true;
+                secondaryPointer = pointer;
+            }
 
-        Vector3 touchPoint = new Vector3(screenX, screenY, 0);
-        controlCamera.unproject(touchPoint);
-        Gdx.app.debug(TAG, "TouchPoint:: screenX: " + touchPoint.x + " | screenY: " + touchPoint.y);
-        if (leftBound.contains(touchPoint.x, touchPoint.y)) {
-            Gdx.app.debug(TAG, "leftBound");
-            leftBoundPressed = true;
-            leftBoundPointer = pointer;
+            return true;
         }
-        if (rightBound.contains(touchPoint.x, touchPoint.y)) {
-            Gdx.app.debug(TAG, "rightBound");
-            rightBoundPressed = true;
-            rightBoundPointer = pointer;
-        }
-        if (upBound.contains(touchPoint.x, touchPoint.y)) {
-            Gdx.app.debug(TAG, "upBound");
-            upBoundPressed = true;
-            upBoundPointer = pointer;
-        }
-        if (downBound.contains(touchPoint.x, touchPoint.y)) {
-            Gdx.app.debug(TAG, "downBound");
-            downBoundPressed = true;
-            downBoundPointer = pointer;
-        }
-        if (primaryBound.contains(touchPoint.x, touchPoint.y)) {
-            primaryBoundPressed = true;
-            primaryBoundPointer = pointer;
-        }
-        if (secondaryBound.contains(touchPoint.x, touchPoint.y)) {
-            secondaryBoundPressed = true;
-            secondaryBoundPointer = pointer;
-        }
+
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Gdx.app.debug(TAG, "Touch Up:: screenX: " + screenX + " | screenY: " + screenY + " | pointer: " + pointer + " | button: " + button);
-        if (pointer == leftBoundPointer) {
-            leftBoundPressed = false;
+        if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+            if (pointer == primaryPointer) {
+                primaryPressed = false;
+            }
+            if (pointer == secondaryPointer) {
+                secondaryPressed = false;
+            }
+            if (pointer == upPointer || pointer == downPointer || pointer == leftPointer || pointer == rightPointer) {
+                directionPressed = Direction.NONE;
+            }
+
+            return true;
         }
-        if (pointer == rightBoundPointer) {
-            rightBoundPressed = false;
-        }
-        if (pointer == upBoundPointer) {
-            upBoundPressed = false;
-        }
-        if (pointer == downBoundPointer) {
-            downBoundPressed = false;
-        }
-        if (pointer == primaryBoundPointer) {
-            primaryBoundPressed = false;
-        }
-        if (pointer == secondaryBoundPointer) {
-            secondaryBoundPressed = false;
-        }
+
         return false;
     }
 
@@ -219,6 +243,12 @@ class Controls implements InputProcessor {
         right.dispose();
         primary.dispose();
         secondary.dispose();
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        //Gdx.app.debug(TAG, "Key Typed:: character: " + ((int) character));
+        return false;
     }
 
     @Override

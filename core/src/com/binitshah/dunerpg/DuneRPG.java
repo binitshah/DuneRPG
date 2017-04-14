@@ -62,10 +62,7 @@ public class DuneRPG extends Game {
 
 	@Override
 	public void render () {
-        float red = 170/255;
-        float green = 168/255;
-        float blue = 167/255;
-        Gdx.gl.glClearColor(red, green, blue, 1);
+        Gdx.gl.glClearColor(0.09803921568f, 0.09411764705f, 0.09803921568f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         orthogonalTiledMapRenderer.setView(orthographicCamera);
