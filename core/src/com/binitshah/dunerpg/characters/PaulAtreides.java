@@ -22,7 +22,7 @@ public class PaulAtreides extends Player {
     //Information
     private static String spriteSheetName = "paulsprites.png";
 
-    public PaulAtreides(Level level) {
-        super(spriteSheetName, level);
+    public PaulAtreides(Level level, float[] mapSpecificPlayerValues) {
+        super(spriteSheetName, level, mapSpecificPlayerValues);
     }
 }

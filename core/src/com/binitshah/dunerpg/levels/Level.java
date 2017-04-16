@@ -74,15 +74,13 @@ public abstract class Level implements Screen {
         camera.position.set(spawnPoint.x, spawnPoint.y, 0.0f);
 
         spriteBatch = new SpriteBatch();
-        controls = new Controls(this.width, this.height);
+        controls = new Controls();
 
         Gdx.input.setInputProcessor(controls);
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() {}
 
     @Override
     public void render(float delta) {
@@ -105,18 +103,14 @@ public abstract class Level implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
-
+        disposeAssets();
     }
 
     public OrthographicCamera getCamera() {
@@ -174,31 +168,44 @@ public abstract class Level implements Screen {
 
         @Override
         public void render() {
-            beginRender();
-            int currentLayer = 0;
-            for (MapLayer layer : map.getLayers()) {
-                if (layer.isVisible()) {
-                    if (layer instanceof TiledMapTileLayer) {
-                        if(currentLayer == split){
-                            batch.end();
-                            spriteBatch.begin();
-                            drawLevelAssets(delta);
-                            spriteBatch.end();
-                            batch.begin();
-                        }
+            if (split < map.getLayers().getCount()) {
+                beginRender();
+                int currentLayer = 0;
+                for (MapLayer layer : map.getLayers()) {
+                    if (layer.isVisible()) {
+                        if (layer instanceof TiledMapTileLayer) {
+                            if(currentLayer == split){
+                                batch.end();
+                                spriteBatch.begin();
+                                drawLevelAssets(delta);
+                                spriteBatch.end();
+                                batch.begin();
+                            }
 
-                        renderTileLayer((TiledMapTileLayer)layer);
-                        currentLayer++;
-                    } else if (layer instanceof TiledMapImageLayer) {
-                        renderImageLayer((TiledMapImageLayer)layer);
-                    } else {
-//                        for (MapObject object : layer.getObjects()) {
-//                            renderObject(object);
-//                        }
+                            renderTileLayer((TiledMapTileLayer)layer);
+                            currentLayer++;
+                        } else if (layer instanceof TiledMapImageLayer) {
+                            renderImageLayer((TiledMapImageLayer)layer);
+                        }
                     }
                 }
+                endRender();
+            } else {
+                beginRender();
+                for (MapLayer layer : map.getLayers()) {
+                    if (layer.isVisible()) {
+                        if (layer instanceof TiledMapTileLayer) {
+                            renderTileLayer((TiledMapTileLayer)layer);
+                        } else if (layer instanceof TiledMapImageLayer) {
+                            renderImageLayer((TiledMapImageLayer)layer);
+                        }
+                    }
+                }
+                endRender();
+                spriteBatch.begin();
+                drawLevelAssets(delta);
+                spriteBatch.end();
             }
-            endRender();
         }
     }
 }

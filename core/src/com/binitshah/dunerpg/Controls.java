@@ -38,11 +38,13 @@ public class Controls implements InputProcessor {
 
     //Rendering
     private OrthographicCamera controlCamera;
+    private float width = 480;
+    private float height = 320;
 
     //Logging
     private final String TAG = "LOGDUNERPG"; //todo: remove
 
-    public Controls(float width, float height) {
+    public Controls() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG); //todo: remove
 
         if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {

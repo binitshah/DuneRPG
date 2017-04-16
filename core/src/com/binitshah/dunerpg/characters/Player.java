@@ -30,7 +30,7 @@ import com.binitshah.dunerpg.levels.Level;
 public class Player {
 
     //general
-    Level level;
+    private Level level;
     private final String TAG = "LOGDUNERPG"; //todo: remove
 
     //Motion
@@ -51,12 +51,13 @@ public class Player {
     private OrthographicCamera playerCamera;
     private SpriteBatch spriteBatch;
     private float statetime = 0;
+    private float[] playerVals;
 
     //Controls
     private Controls controls;
 
 
-    public Player (String spriteSheetName, Level level) {
+    public Player (String spriteSheetName, Level level, float[] mapSpecificPlayerValues) {
         //General
         this.level = level;
         Gdx.app.setLogLevel(Application.LOG_DEBUG); //todo: remove
@@ -90,18 +91,21 @@ public class Player {
         }
         walkLeft = new Animation<TextureRegion>(0.166f, frames);
 
-        Texture spriteSheetRedundant = new Texture(Gdx.files.internal("paulsprites.png"));
+        Texture spriteSheetRedundant = new Texture(Gdx.files.internal(spriteSheetName));
         stillForward = new TextureRegion(spriteSheetRedundant, 0, 400, 100, 100);
         stillBackward = new TextureRegion(spriteSheetRedundant, 100, 400, 100, 100);
         stillLeft = new TextureRegion(spriteSheetRedundant, 0, 500, 100, 100);
         stillRight = new TextureRegion(spriteSheetRedundant, 100, 500, 100, 100);
 
+        //Controls
+        this.controls = this.level.getControls();
+
         //Rendering
         this.spriteBatch = this.level.getSpriteBatch();
-        this.controls = this.level.getControls();
         this.directionLastOriented = Orientation.FORWARD;
         this.playerCamera = new OrthographicCamera(this.level.getWidth(), this.level.getHeight());
         this.playerCamera.position.set(this.level.getWidth()/2, this.level.getHeight()/2, 0);
+        this.playerVals = mapSpecificPlayerValues;
 
         //Collision
         collisionObjects = this.level.getTiledMap().getLayers().get(this.level.getLayer("collision")).getObjects();
@@ -114,16 +118,16 @@ public class Player {
         if (controls.getDirectionPressed() == Controls.Direction.NONE) {
             switch (directionLastOriented) {
                 case FORWARD:
-                    spriteBatch.draw(stillForward, -11, -11, 22, 22);
+                    spriteBatch.draw(stillForward, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     break;
                 case BACKWARD:
-                    spriteBatch.draw(stillBackward, -11, -11, 22, 22);
+                    spriteBatch.draw(stillBackward, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     break;
                 case LEFT:
-                    spriteBatch.draw(stillLeft, -11, -11, 22, 22);
+                    spriteBatch.draw(stillLeft, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     break;
                 case RIGHT:
-                    spriteBatch.draw(stillRight, -11, -11, 22, 22);
+                    spriteBatch.draw(stillRight, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     break;
             }
         } else {
@@ -133,70 +137,93 @@ public class Player {
                 case UP:
                     isColliding = false;
                     currentFrame = walkBackward.getKeyFrame(statetime, true);
-                    spriteBatch.draw(currentFrame, -11, -11, 22, 22);
+                    spriteBatch.draw(currentFrame, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     directionLastOriented = Orientation.BACKWARD;
                     for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
-                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + 2 + playerBounds[1], playerBounds[2], playerBounds[3]);
+                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerVals[4] + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
                             isColliding = true;
                         }
                     }
                     if (!isColliding) {
-                        level.getCamera().translate(0, 2);
+                        level.getCamera().translate(0, playerVals[4]);
                     }
                     break;
                 case DOWN:
                     isColliding = false;
                     currentFrame = walkForward.getKeyFrame(statetime, true);
-                    spriteBatch.draw(currentFrame, -11, -11, 22, 22);
+                    spriteBatch.draw(currentFrame, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     directionLastOriented = Orientation.FORWARD;
                     for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
-                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y - 2 + playerBounds[1], playerBounds[2], playerBounds[3]);
+                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y - playerVals[4] + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
                             isColliding = true;
                         }
                     }
                     if (!isColliding) {
-                        level.getCamera().translate(0, -2);
+                        level.getCamera().translate(0, -playerVals[4]);
                     }
                     break;
                 case LEFT:
                     isColliding = false;
                     currentFrame = walkLeft.getKeyFrame(statetime, true);
-                    spriteBatch.draw(currentFrame, -11, -11, 22, 22);
+                    spriteBatch.draw(currentFrame, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     directionLastOriented = Orientation.LEFT;
                     for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
-                        Rectangle playerRec = new Rectangle(level.getCamera().position.x - 3 + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
+                        Rectangle playerRec = new Rectangle(level.getCamera().position.x - playerVals[5] + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
                             isColliding = true;
                         }
                     }
                     if (!isColliding) {
-                        level.getCamera().translate(-3, 0);
+                        level.getCamera().translate(-playerVals[5], 0);
                     }
                     break;
                 case RIGHT:
                     isColliding = false;
                     currentFrame = walkRight.getKeyFrame(statetime, true);
-                    spriteBatch.draw(currentFrame, -11, -11, 22, 22);
+                    spriteBatch.draw(currentFrame, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     directionLastOriented = Orientation.RIGHT;
                     for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
-                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + 3 + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
+                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerVals[5] + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
                             isColliding = true;
                         }
                     }
                     if (!isColliding) {
-                        level.getCamera().translate(3, 0);
+                        level.getCamera().translate(playerVals[5], 0);
                     }
                     break;
             }
         }
 
+        if (level.getMapName().equals("cave.tmx")) {
+            checkCaveOtherLayerForCollisions();
+        } else if (level.getMapName().equals("tunnels.tmx")) {
+            checkTunnelsOtherAndItemsLayerForCollisions();
+        }
+    }
+
+    private void checkTunnelsOtherAndItemsLayerForCollisions() {
+        for (RectangleMapObject rectangleObject : otherObjects.getByType(RectangleMapObject.class)) {
+            Rectangle otherRec = rectangleObject.getRectangle();
+            Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
+            if (Intersector.overlaps(otherRec, playerRec)) {
+                String objectClass = (String) rectangleObject.getProperties().get("class");
+                if (objectClass != null) {
+                    if (objectClass.equals("exit")) {
+                        level.endLevel();
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkCaveOtherLayerForCollisions() {
         for (RectangleMapObject rectangleObject : otherObjects.getByType(RectangleMapObject.class)) {
             Rectangle otherRec = rectangleObject.getRectangle();
             Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
@@ -226,7 +253,7 @@ public class Player {
     }
 
     public void dispose() {
-        spriteBatch.dispose();
+        //nothing to dispose of
     }
 
 }

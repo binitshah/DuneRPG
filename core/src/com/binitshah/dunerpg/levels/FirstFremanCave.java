@@ -10,8 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.binitshah.dunerpg.DuneRPG;
 import com.binitshah.dunerpg.characters.PaulAtreides;
 
-import java.util.HashMap;
-
 /**
  * Created by binitshah on 4/14/17.
  *
@@ -29,6 +27,7 @@ public class FirstFremanCave extends Level {
     private static String mapName = "cave.tmx";
     private static float[] clearColors = new float[]{0.09803921568f, 0.09411764705f, 0.09803921568f, 1};
     private static int splitLayer = 3; //the layer at which the sprites are drawn before the layer so that the layers appear on top the sprites.
+    private float[] mapSpecificPlayerValues = {-11, -11, 22, 22, 2, 3};
 
     //Objects
     private PaulAtreides paulAtreides;
@@ -36,7 +35,7 @@ public class FirstFremanCave extends Level {
     public FirstFremanCave(DuneRPG game) {
         super(mapName, FirstFremanCave.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
         this.game = game;
-        paulAtreides = new PaulAtreides(this);
+        this.paulAtreides = new PaulAtreides(this, mapSpecificPlayerValues);
     }
 
     @Override
@@ -46,10 +45,8 @@ public class FirstFremanCave extends Level {
 
     @Override
     public void endLevel() {
-        disposeAssets();
-//        KynesRoom testNextLevel = new KynesRoom(game);
-//        game.setScreen(testNextLevel);
-        //implementation pending
+        BackTunnels testingNextLevel = new BackTunnels(game);
+        game.setScreen(testingNextLevel);
     }
 
     @Override
