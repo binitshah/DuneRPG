@@ -74,7 +74,7 @@ public abstract class Level implements Screen {
         camera.position.set(spawnPoint.x, spawnPoint.y, 0.0f);
 
         spriteBatch = new SpriteBatch();
-        controls = new Controls(this.width, this.height, camera);
+        controls = new Controls(this.width, this.height);
 
         Gdx.input.setInputProcessor(controls);
     }
@@ -162,7 +162,7 @@ public abstract class Level implements Screen {
     public abstract void endLevel();
     public abstract void drawLevelAssets(float delta);
     public abstract void disposeAssets();
-    public abstract int getCollisionLayer();
+    public abstract int getLayer(String layerName);
 
     private class OrthogonalTiledMapWithAssetsRenderer extends OrthogonalTiledMapRenderer {
         private int split;

@@ -38,12 +38,11 @@ public class Controls implements InputProcessor {
 
     //Rendering
     private OrthographicCamera controlCamera;
-    private OrthographicCamera mainCamera;
 
     //Logging
     private final String TAG = "LOGDUNERPG"; //todo: remove
 
-    public Controls(float width, float height, OrthographicCamera mainCamera) {
+    public Controls(float width, float height) {
         Gdx.app.setLogLevel(Application.LOG_DEBUG); //todo: remove
 
         if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
@@ -72,7 +71,6 @@ public class Controls implements InputProcessor {
         }
 
         //more camera
-        this.mainCamera = mainCamera;
         directionPressed = Direction.NONE;
     }
 
@@ -93,26 +91,18 @@ public class Controls implements InputProcessor {
             case LEFT:
                 //mainCamera.translate(-3, 0);
                 Gdx.app.debug(TAG, "LEFT Button Pressed");
-                pos = mainCamera.position.x + " | " + mainCamera.position.y;
-                Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case RIGHT:
                 //mainCamera.translate(3, 0);
                 Gdx.app.debug(TAG, "RIGHT Button Pressed");
-                pos = mainCamera.position.x + " | " + mainCamera.position.y;
-                Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case UP:
                 //mainCamera.translate(0, 2);
                 Gdx.app.debug(TAG, "UP Button Pressed");
-                pos = mainCamera.position.x + " | " + mainCamera.position.y;
-                Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case DOWN:
                 //mainCamera.translate(0, -2);
                 Gdx.app.debug(TAG, "DOWN Button Pressed");
-                pos = mainCamera.position.x + " | " + mainCamera.position.y;
-                Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
         }
 

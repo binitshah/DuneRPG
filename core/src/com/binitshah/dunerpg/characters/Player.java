@@ -11,7 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,9 +25,6 @@ import com.binitshah.dunerpg.levels.Level;
  * Created by binitshah on 4/14/17.
  * A generic player.
  *
- * todo:
- *  - check collisions
- *  - handle user interaction
  */
 
 public class Player {
@@ -46,6 +45,7 @@ public class Player {
     private String blockedKey = "blocked";
     private MapObjects collisionObjects;
     private float[] playerBounds = {-4, -10, 8, 1}; //[0] - xoffset, [1] - yoffset, [2] - width, [3] - height
+    private MapObjects otherObjects;
 
     //Rendering
     private OrthographicCamera playerCamera;
@@ -104,7 +104,8 @@ public class Player {
         this.playerCamera.position.set(this.level.getWidth()/2, this.level.getHeight()/2, 0);
 
         //Collision
-        collisionObjects = this.level.getTiledMap().getLayers().get(this.level.getCollisionLayer()).getObjects();
+        collisionObjects = this.level.getTiledMap().getLayers().get(this.level.getLayer("collision")).getObjects();
+        otherObjects = this.level.getTiledMap().getLayers().get(this.level.getLayer("other")).getObjects();
     }
 
     public void draw(float delta) {
@@ -139,7 +140,6 @@ public class Player {
                         Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + 2 + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
                             isColliding = true;
-                            Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
                         }
                     }
                     if (!isColliding) {
@@ -154,10 +154,8 @@ public class Player {
                     for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
                         Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y - 2 + playerBounds[1], playerBounds[2], playerBounds[3]);
-                        Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
                         if (Intersector.overlaps(wallRec, playerRec)) {
                             isColliding = true;
-                            Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
                         }
                     }
                     if (!isColliding) {
@@ -174,7 +172,6 @@ public class Player {
                         Rectangle playerRec = new Rectangle(level.getCamera().position.x - 3 + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
                             isColliding = true;
-                            Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
                         }
                     }
                     if (!isColliding) {
@@ -191,13 +188,39 @@ public class Player {
                         Rectangle playerRec = new Rectangle(level.getCamera().position.x + 3 + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
                             isColliding = true;
-                            Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
                         }
                     }
                     if (!isColliding) {
                         level.getCamera().translate(3, 0);
                     }
                     break;
+            }
+        }
+
+        for (RectangleMapObject rectangleObject : otherObjects.getByType(RectangleMapObject.class)) {
+            Rectangle otherRec = rectangleObject.getRectangle();
+            Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
+            if (Intersector.overlaps(otherRec, playerRec)) {
+                String objectClass = (String) rectangleObject.getProperties().get("class");
+                if (objectClass != null) {
+                    if (objectClass.equals("teleport")) {
+                        if (rectangleObject.getName().equals("Teleport_To_Lava_Island")) {
+                            Rectangle spawnLavaIsland = ((RectangleMapObject) otherObjects.get("Spawn_Lava_Island")).getRectangle();
+                            level.getCamera().position.set(spawnLavaIsland.getX() + spawnLavaIsland.getWidth()/2, spawnLavaIsland.getY() + spawnLavaIsland.getHeight()/2, 0.0f);
+                        } else if (rectangleObject.getName().equals("Teleport_From_Lava_Island")) {
+                            Rectangle spawnFromLavaIsland = ((RectangleMapObject) otherObjects.get("Spawn_From_Lava_Island")).getRectangle();
+                            level.getCamera().position.set(spawnFromLavaIsland.getX() + spawnFromLavaIsland.getWidth()/2, spawnFromLavaIsland.getY() + spawnFromLavaIsland.getHeight()/2, 0.0f);
+                        } else if (rectangleObject.getName().equals("Teleport_From_Water_Island")) {
+                            Rectangle spawnFromWaterIsland = ((RectangleMapObject) otherObjects.get("Spawn_From_Water_Island")).getRectangle();
+                            level.getCamera().position.set(spawnFromWaterIsland.getX() + spawnFromWaterIsland.getWidth()/2, spawnFromWaterIsland.getY() + spawnFromWaterIsland.getHeight()/2, 0.0f);
+                        } else if (rectangleObject.getName().equals("Teleport_To_Water_Island")) {
+                            Rectangle spawnWaterIsland = ((RectangleMapObject) otherObjects.get("Spawn_Water_Island")).getRectangle();
+                            level.getCamera().position.set(spawnWaterIsland.getX() + spawnWaterIsland.getWidth()/2, spawnWaterIsland.getY() + spawnWaterIsland.getHeight()/2, 0.0f);
+                        }
+                    } else if (objectClass.equals("exit")) {
+                        level.endLevel();
+                    }
+                }
             }
         }
     }

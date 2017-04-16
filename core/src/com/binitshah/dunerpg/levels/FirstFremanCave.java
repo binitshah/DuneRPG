@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.binitshah.dunerpg.DuneRPG;
 import com.binitshah.dunerpg.characters.PaulAtreides;
 
+import java.util.HashMap;
+
 /**
  * Created by binitshah on 4/14/17.
  *
@@ -56,8 +58,13 @@ public class FirstFremanCave extends Level {
     }
 
     @Override
-    public int getCollisionLayer() {
-        return 6;
+    public int getLayer(String layerName) {
+        if (layerName.equals("collision")) {
+            return 6;
+        } else if (layerName.equals("other")) {
+            return 5;
+        }
+        return -1;
     }
 
     private static Vector2 findSpawnPoint(String mapName) {
@@ -65,7 +72,7 @@ public class FirstFremanCave extends Level {
             TmxMapLoader tmxMapLoader = new TmxMapLoader();
             TiledMap tiledMap = tmxMapLoader.load(mapName);
             RectangleMapObject rectangleMapObject = ((RectangleMapObject) tiledMap.getLayers().get(5).getObjects().get("Spawn_Point"));
-            return new Vector2(rectangleMapObject.getRectangle().getX(), rectangleMapObject.getRectangle().getY());
+            return new Vector2(rectangleMapObject.getRectangle().getX() + rectangleMapObject.getRectangle().getWidth()/2, rectangleMapObject.getRectangle().getY() + rectangleMapObject.getRectangle().getHeight()/2);
         } catch (Exception e) {
             return null;
         }
