@@ -17,12 +17,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.binitshah.dunerpg.Controls;
-import com.binitshah.dunerpg.levels.FirstFremanCave;
 import com.binitshah.dunerpg.levels.Level;
-
-import java.util.Arrays;
-
-import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by binitshah on 4/14/17.
@@ -50,12 +45,12 @@ public class Player {
     //Collisions
     private String blockedKey = "blocked";
     private MapObjects collisionObjects;
+    private float[] playerBounds = {-4, -10, 8, 1}; //[0] - xoffset, [1] - yoffset, [2] - width, [3] - height
 
     //Rendering
     private OrthographicCamera playerCamera;
     private SpriteBatch spriteBatch;
     private float statetime = 0;
-    private TextureRegion currentFrame;
 
     //Controls
     private Controls controls;
@@ -131,58 +126,77 @@ public class Player {
                     break;
             }
         } else {
+            boolean isColliding = false;
+            TextureRegion currentFrame;
             switch (controls.getDirectionPressed()) {
                 case UP:
-                    directionLastOriented = Orientation.BACKWARD;
+                    isColliding = false;
                     currentFrame = walkBackward.getKeyFrame(statetime, true);
                     spriteBatch.draw(currentFrame, -11, -11, 22, 22);
-//                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
-//                        Rectangle wallRec = rectangleObject.getRectangle();
-//                        Rectangle playerRec = new Rectangle(level.getCamera().position.x, level.getCamera().position.y, 10, 10);
-//                        if (!Intersector.overlaps(wallRec, playerRec)) {
-//                            level.getCamera().translate(0, 2);
-//
-//                        }
-//                    }
+                    directionLastOriented = Orientation.BACKWARD;
+                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
+                        Rectangle wallRec = rectangleObject.getRectangle();
+                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + 2 + playerBounds[1], playerBounds[2], playerBounds[3]);
+                        if (Intersector.overlaps(wallRec, playerRec)) {
+                            isColliding = true;
+                            Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
+                        }
+                    }
+                    if (!isColliding) {
+                        level.getCamera().translate(0, 2);
+                    }
                     break;
                 case DOWN:
-                    directionLastOriented = Orientation.FORWARD;
+                    isColliding = false;
                     currentFrame = walkForward.getKeyFrame(statetime, true);
                     spriteBatch.draw(currentFrame, -11, -11, 22, 22);
-//                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
-//                        Rectangle wallRec = rectangleObject.getRectangle();
-//                        Rectangle playerRec = new Rectangle(level.getCamera().position.x, level.getCamera().position.y, 10, 10);
-//                        if (!Intersector.overlaps(wallRec, playerRec)) {
-//                            level.getCamera().translate(0, -2);
-//
-//                        }
-//                    }
+                    directionLastOriented = Orientation.FORWARD;
+                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
+                        Rectangle wallRec = rectangleObject.getRectangle();
+                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y - 2 + playerBounds[1], playerBounds[2], playerBounds[3]);
+                        Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
+                        if (Intersector.overlaps(wallRec, playerRec)) {
+                            isColliding = true;
+                            Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
+                        }
+                    }
+                    if (!isColliding) {
+                        level.getCamera().translate(0, -2);
+                    }
                     break;
                 case LEFT:
-                    directionLastOriented = Orientation.LEFT;
+                    isColliding = false;
                     currentFrame = walkLeft.getKeyFrame(statetime, true);
                     spriteBatch.draw(currentFrame, -11, -11, 22, 22);
-//                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
-//                        Rectangle wallRec = rectangleObject.getRectangle();
-//                        Rectangle playerRec = new Rectangle(level.getCamera().position.x, level.getCamera().position.y, 10, 10);
-//                        if (!Intersector.overlaps(wallRec, playerRec)) {
-//                            level.getCamera().translate(-3, 0);
-//
-//                        }
-//                    }
+                    directionLastOriented = Orientation.LEFT;
+                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
+                        Rectangle wallRec = rectangleObject.getRectangle();
+                        Rectangle playerRec = new Rectangle(level.getCamera().position.x - 3 + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
+                        if (Intersector.overlaps(wallRec, playerRec)) {
+                            isColliding = true;
+                            Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
+                        }
+                    }
+                    if (!isColliding) {
+                        level.getCamera().translate(-3, 0);
+                    }
                     break;
                 case RIGHT:
-                    directionLastOriented = Orientation.RIGHT;
+                    isColliding = false;
                     currentFrame = walkRight.getKeyFrame(statetime, true);
                     spriteBatch.draw(currentFrame, -11, -11, 22, 22);
-//                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
-//                        Rectangle wallRec = rectangleObject.getRectangle();
-//                        Rectangle playerRec = new Rectangle(level.getCamera().position.x, level.getCamera().position.y, 10, 10);
-//                        if (!Intersector.overlaps(wallRec, playerRec)) {
-//                            level.getCamera().translate(3, 0);
-//
-//                        }
-//                    }
+                    directionLastOriented = Orientation.RIGHT;
+                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
+                        Rectangle wallRec = rectangleObject.getRectangle();
+                        Rectangle playerRec = new Rectangle(level.getCamera().position.x + 3 + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
+                        if (Intersector.overlaps(wallRec, playerRec)) {
+                            isColliding = true;
+                            Gdx.app.debug(TAG, "Wall Pos: " + wallRec.getX() + ", " + wallRec.getY() + ", " + wallRec.getWidth() + ",  " + wallRec.getHeight());
+                        }
+                    }
+                    if (!isColliding) {
+                        level.getCamera().translate(3, 0);
+                    }
                     break;
             }
         }

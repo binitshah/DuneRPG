@@ -91,25 +91,25 @@ public class Controls implements InputProcessor {
         String pos;
         switch (directionPressed) {
             case LEFT:
-                mainCamera.translate(-3, 0);
+                //mainCamera.translate(-3, 0);
                 Gdx.app.debug(TAG, "LEFT Button Pressed");
                 pos = mainCamera.position.x + " | " + mainCamera.position.y;
                 Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case RIGHT:
-                mainCamera.translate(3, 0);
+                //mainCamera.translate(3, 0);
                 Gdx.app.debug(TAG, "RIGHT Button Pressed");
                 pos = mainCamera.position.x + " | " + mainCamera.position.y;
                 Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case UP:
-                mainCamera.translate(0, 2);
+                //mainCamera.translate(0, 2);
                 Gdx.app.debug(TAG, "UP Button Pressed");
                 pos = mainCamera.position.x + " | " + mainCamera.position.y;
                 Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case DOWN:
-                mainCamera.translate(0, -2);
+                //mainCamera.translate(0, -2);
                 Gdx.app.debug(TAG, "DOWN Button Pressed");
                 pos = mainCamera.position.x + " | " + mainCamera.position.y;
                 Gdx.app.debug(TAG, "Pos: " + pos);
