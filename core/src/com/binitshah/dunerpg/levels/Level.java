@@ -6,10 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.binitshah.dunerpg.Controls;
@@ -24,8 +29,8 @@ public abstract class Level implements Screen {
 
     //Scene
     private TiledMap tiledMap;
-    private OrthographicCamera orthographicCamera;
-    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+    private OrthographicCamera camera;
+    private OrthogonalTiledMapWithAssetsRenderer mapRenderer;
     private Viewport viewport;
     private float width;
     private float height;
@@ -33,8 +38,9 @@ public abstract class Level implements Screen {
     //Rendering
     private SpriteBatch spriteBatch;
     private String mapName = "";
-    private Rectangle spawnPoint;
+    private Vector2 spawnPoint;
     private float[] clearColor;
+    private float delta;
 
     //Controls
     private Controls controls;
@@ -42,10 +48,12 @@ public abstract class Level implements Screen {
     //Logging
     private final String TAG = "LOGDUNERPG"; //todo: remove
 
-    public Level(String mapName, Rectangle spawnPoint, float[] clearColor, float width, float height) {
+    public Level(String mapName, Vector2 spawnPoint, float[] clearColor, float width, float height, int splitLayer) {
         this.mapName = mapName;
         this.spawnPoint = spawnPoint;
         this.clearColor = clearColor;
+        this.width = width;
+        this.height = height;
 
         Gdx.app.setLogLevel(Application.LOG_DEBUG); //todo: remove
 
@@ -58,15 +66,15 @@ public abstract class Level implements Screen {
             Gdx.app.exit();
         }
 
-        orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        orthographicCamera = new OrthographicCamera();
-        viewport = new FillViewport(width, height, orthographicCamera);
+        mapRenderer = new OrthogonalTiledMapWithAssetsRenderer(tiledMap, splitLayer);
+        camera = new OrthographicCamera();
+        viewport = new FillViewport(this.width, this.height, camera);
         viewport.apply();
 
-        orthographicCamera.position.set(spawnPoint.getX(), spawnPoint.getY(), 0.0f);
+        camera.position.set(spawnPoint.x, spawnPoint.y, 0.0f);
 
         spriteBatch = new SpriteBatch();
-        controls = new Controls(width, height, orthographicCamera);
+        controls = new Controls(this.width, this.height, camera);
 
         Gdx.input.setInputProcessor(controls);
     }
@@ -78,16 +86,16 @@ public abstract class Level implements Screen {
 
     @Override
     public void render(float delta) {
+        this.delta = delta;
         Gdx.gl.glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        orthogonalTiledMapRenderer.setView(orthographicCamera);
-        orthogonalTiledMapRenderer.render();
-        orthographicCamera.update();
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+        camera.update();
 
         spriteBatch.begin();
         controls.draw(spriteBatch);
-        drawLevelAssets(delta);
         spriteBatch.end();
     }
 
@@ -111,35 +119,39 @@ public abstract class Level implements Screen {
 
     }
 
-    public OrthographicCamera getOrthographicCamera() {
-        return orthographicCamera;
-    }
-
-    public void setOrthographicCamera(OrthographicCamera orthographicCamera) {
-        this.orthographicCamera = orthographicCamera;
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 
     public SpriteBatch getSpriteBatch() {
         return spriteBatch;
     }
 
-    public void setSpriteBatch(SpriteBatch spriteBatch) {
-        this.spriteBatch = spriteBatch;
-    }
-
     public Controls getControls() {
         return controls;
     }
 
-    public void setControls(Controls controls) {
-        this.controls = controls;
+    public TiledMap getTiledMap() {
+        return tiledMap;
+    }
+
+    public String getMapName() {
+        return mapName;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 
     @Override
     public void dispose() {
         try {
             tiledMap.dispose();
-            orthogonalTiledMapRenderer.dispose();
+            mapRenderer.dispose();
             spriteBatch.dispose();
             controls.dispose();
         } catch (NullPointerException e) {
@@ -147,7 +159,46 @@ public abstract class Level implements Screen {
         }
     }
 
-    abstract void endLevel();
-    abstract void drawLevelAssets(float delta);
-    abstract void disposeAssets();
+    public abstract void endLevel();
+    public abstract void drawLevelAssets(float delta);
+    public abstract void disposeAssets();
+    public abstract int getCollisionLayer();
+
+    private class OrthogonalTiledMapWithAssetsRenderer extends OrthogonalTiledMapRenderer {
+        private int split;
+
+        OrthogonalTiledMapWithAssetsRenderer(TiledMap map, int split) {
+            super(map);
+            this.split = split;
+        }
+
+        @Override
+        public void render() {
+            beginRender();
+            int currentLayer = 0;
+            for (MapLayer layer : map.getLayers()) {
+                if (layer.isVisible()) {
+                    if (layer instanceof TiledMapTileLayer) {
+                        if(currentLayer == split){
+                            batch.end();
+                            spriteBatch.begin();
+                            drawLevelAssets(delta);
+                            spriteBatch.end();
+                            batch.begin();
+                        }
+
+                        renderTileLayer((TiledMapTileLayer)layer);
+                        currentLayer++;
+                    } else if (layer instanceof TiledMapImageLayer) {
+                        renderImageLayer((TiledMapImageLayer)layer);
+                    } else {
+//                        for (MapObject object : layer.getObjects()) {
+//                            renderObject(object);
+//                        }
+                    }
+                }
+            }
+            endRender();
+        }
+    }
 }

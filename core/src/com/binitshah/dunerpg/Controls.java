@@ -87,22 +87,32 @@ public class Controls implements InputProcessor {
             spriteBatch.draw(secondary, secondaryBound.x - secondaryBound.radius, secondaryBound.y - secondaryBound.radius, secondaryBound.radius * 2, secondaryBound.radius * 2);
         }
 
+        //todo: remove
+        String pos;
         switch (directionPressed) {
             case LEFT:
-                mainCamera.translate(-4, 0);
+                mainCamera.translate(-3, 0);
                 Gdx.app.debug(TAG, "LEFT Button Pressed");
+                pos = mainCamera.position.x + " | " + mainCamera.position.y;
+                Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case RIGHT:
-                mainCamera.translate(4, 0);
+                mainCamera.translate(3, 0);
                 Gdx.app.debug(TAG, "RIGHT Button Pressed");
+                pos = mainCamera.position.x + " | " + mainCamera.position.y;
+                Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case UP:
-                mainCamera.translate(0, 4);
+                mainCamera.translate(0, 2);
                 Gdx.app.debug(TAG, "UP Button Pressed");
+                pos = mainCamera.position.x + " | " + mainCamera.position.y;
+                Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
             case DOWN:
-                mainCamera.translate(0, -4);
+                mainCamera.translate(0, -2);
                 Gdx.app.debug(TAG, "DOWN Button Pressed");
+                pos = mainCamera.position.x + " | " + mainCamera.position.y;
+                Gdx.app.debug(TAG, "Pos: " + pos);
                 break;
         }
 

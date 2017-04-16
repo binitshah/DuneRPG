@@ -6,13 +6,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.binitshah.dunerpg.DuneRPG;
 import com.binitshah.dunerpg.characters.PaulAtreides;
 
 /**
  * Created by binitshah on 4/14/17.
- * todo:
- *  - replace contructor with level specific values
+ *
+ * The first freman cave level in which Paul will battle jamis.
  */
 
 public class FirstFremanCave extends Level {
@@ -25,14 +26,15 @@ public class FirstFremanCave extends Level {
     private static final float HEIGHT = 320;
     private static String mapName = "cave.tmx";
     private static float[] clearColors = new float[]{0.09803921568f, 0.09411764705f, 0.09803921568f, 1};
+    private static int splitLayer = 3; //the layer at which the sprites are drawn before the layer so that the layers appear on top the sprites.
 
     //Objects
-    PaulAtreides paulAtreides;
+    private PaulAtreides paulAtreides;
 
     public FirstFremanCave(DuneRPG game) {
-        super(mapName, FirstFremanCave.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT);
+        super(mapName, FirstFremanCave.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
         this.game = game;
-        paulAtreides = new PaulAtreides(getSpriteBatch(), getControls(), WIDTH, HEIGHT);
+        paulAtreides = new PaulAtreides(this);
     }
 
     @Override
@@ -42,6 +44,7 @@ public class FirstFremanCave extends Level {
 
     @Override
     public void endLevel() {
+        disposeAssets();
 //        KynesRoom testNextLevel = new KynesRoom(game);
 //        game.setScreen(testNextLevel);
         //implementation pending
@@ -52,12 +55,17 @@ public class FirstFremanCave extends Level {
         paulAtreides.dispose();
     }
 
-    private static Rectangle findSpawnPoint(String mapName) {
+    @Override
+    public int getCollisionLayer() {
+        return 6;
+    }
+
+    private static Vector2 findSpawnPoint(String mapName) {
         try {
             TmxMapLoader tmxMapLoader = new TmxMapLoader();
             TiledMap tiledMap = tmxMapLoader.load(mapName);
-            RectangleMapObject rectangleMapObject = ((RectangleMapObject) tiledMap.getLayers().get(5).getObjects().get("Spawn Point"));
-            return rectangleMapObject.getRectangle();
+            RectangleMapObject rectangleMapObject = ((RectangleMapObject) tiledMap.getLayers().get(5).getObjects().get("Spawn_Point"));
+            return new Vector2(rectangleMapObject.getRectangle().getX(), rectangleMapObject.getRectangle().getY());
         } catch (Exception e) {
             return null;
         }

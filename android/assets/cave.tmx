@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="6">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" nextobjectid="107">
  <tileset firstgid="1" name="Cave" tilewidth="16" tileheight="16" tilecount="336" columns="16">
   <image source="cave.png" width="256" height="336"/>
  </tileset>
@@ -233,8 +233,8 @@
 0,0,0,0,0,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,195,0,0,0,0,0,0,0,0,0,0,0,0,0,0,193,0,0,0,0,0,0,0,0,0,0,42,0,0,
 0,0,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,25,0,0,0,0,0,0,0,0,0,226,178,178,178,178,178,178,178,178,178,178,178,178,178,178,225,0,0,0,0,0,0,0,0,0,0,26,0,0,
 0,0,0,0,0,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,
-0,0,0,0,0,0,0,60,62,63,62,63,62,64,0,0,0,61,62,63,62,63,63,76,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,
+0,0,0,0,0,0,0,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,76,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,
+0,0,0,0,0,0,0,51,51,51,51,51,51,25,0,0,0,26,51,51,51,51,51,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,41,0,0,0,42,0,0,0,0,0,0,0,0,7,14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,15,14,14,15,14,15,14,15,14,15,14,15,15,14,15,14,15,14,15,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,42,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,0,26,0,0,0,0,0,0,0,0,23,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,31,30,30,31,30,31,30,31,30,31,30,31,31,30,31,30,31,30,31,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,41,0,0,0,42,0,0,0,0,0,0,0,0,39,46,47,46,47,46,47,46,47,46,47,46,47,46,47,46,47,46,46,47,46,47,46,47,46,47,46,47,47,46,47,46,47,46,47,48,0,0,0,0,0,0,0,0,0,26,55,55,55,55,55,55,55,55,55,55,55,55,55,55,55,25,0,0,0,0,0,0,0,0,0,26,0,0,
@@ -337,7 +337,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,62,63,62,63,62,63,62,63,62,63,63,63,63,62,63,63,63,62,63,62,62,62,62,62,63,63,62,62,62,63,62,62,62,63,63,62,63,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,62,63,63,62,63,64,0,0,0,61,62,63,62,63,63,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61,62,63,63,63,62,63,63,63,63,63,63,62,62,62,63,64,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -524,6 +524,390 @@
 </data>
  </layer>
  <objectgroup name="Objects">
-  <object id="5" name="Spawn Point" x="247.5" y="167.5" width="1" height="1"/>
+  <object id="5" name="Spawn_Point" x="240" y="160" width="16" height="16"/>
+  <object id="6" name="Teleport_To_Lava_Island" x="1280" y="144" width="16" height="16"/>
+  <object id="11" name="Freman1_1" x="240" y="400" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup name="Walls">
+  <object id="15" name="Wall" x="112" y="112" width="272" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="17" name="Wall" x="112" y="160" width="16" height="176">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="19" name="Wall" x="368" y="160" width="16" height="32">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="20" name="Wall" x="368" y="192" width="240" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="21" name="Wall" x="608" y="160" width="16" height="80">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="22" name="Wall" x="416" y="160" width="192" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="26" name="Wall" x="400" y="64" width="16" height="112">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="28" name="Wall" x="416" y="64" width="560" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="29" name="Wall" x="960" y="16" width="272" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="30" name="Wall" x="1200" y="0" width="32" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="31" name="Wall" x="1264" y="0" width="64" height="80">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="32" name="Wall" x="1216" y="64" width="32" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="34" name="Wall" x="1232" y="80" width="16" height="144">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="35" name="Wall" x="1136" y="208" width="96" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="36" name="Wall" x="1136" y="224" width="16" height="80">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="39" name="Wall" x="1152" y="288" width="240" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="40" name="Wall" x="1376" y="208" width="16" height="80">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="41" name="Wall" x="1264" y="208" width="112" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="42" name="Wall" x="1264" y="96" width="16" height="112">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="43" name="Wall" x="1280" y="96" width="96" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="45" name="Wall" x="1360" y="0" width="16" height="96">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="46" name="Wall" x="1376" y="0" width="192" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="50" name="Wall" x="1552" y="48" width="16" height="1248">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="51" name="Wall" x="1552" y="1296" width="48" height="64">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="52" name="Wall" x="1536" y="1296" width="16" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="53" name="Wall" x="1440" y="1328" width="96" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="54" name="Wall" x="1440" y="1344" width="16" height="80">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="55" name="Wall" x="1280" y="1408" width="160" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="56" name="Wall" x="1280" y="1424" width="16" height="160">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="57" name="Wall" x="48" y="1568" width="1232" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="58" name="Wall" x="48" y="464" width="16" height="1104">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="59" name="Wall" x="64" y="464" width="160" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="60" name="Wall" x="208" y="336" width="16" height="128">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="61" x="112" y="336" width="96" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="62" x="272" y="336" width="112" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="63" x="368" y="288" width="16" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="64" x="384" y="288" width="608" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="66" x="976" y="304" width="16" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="67" x="416" y="352" width="576" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="68" x="416" y="400" width="16" height="160">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="69" x="432" y="544" width="976" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="70" x="1392" y="560" width="16" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="71" x="592" y="608" width="816" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="73" x="592" y="656" width="16" height="368">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="74" x="608" y="1008" width="256" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="75" x="848" y="1024" width="16" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="76" x="640" y="1040" width="224" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="77" x="640" y="1088" width="16" height="352">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="78" x="496" y="1440" width="160" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="79" x="496" y="1216" width="16" height="224">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="80" x="432" y="1168" width="80" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="81" x="432" y="1216" width="16" height="224">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="82" x="400" y="1440" width="48" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="83" x="400" y="1136" width="16" height="304">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="84" x="416" y="1136" width="96" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="85" x="496" y="560" width="16" height="576">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="86" x="112" y="560" width="384" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="87" x="272" y="352" width="16" height="208">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="88" x="64" y="656" width="384" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="90" x="112" y="752" width="384" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="91" x="64" y="848" width="384" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="92" x="112" y="944" width="384" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="93" x="64" y="1040" width="384" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="94" x="112" y="1136" width="48" height="352">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="95" x="208" y="1136" width="48" height="352">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="96" x="304" y="1136" width="48" height="352">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="97" x="656" y="944" width="272" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="98" x="656" y="704" width="16" height="240">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="99" x="672" y="704" width="752" height="16">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="100" x="1408" y="720" width="16" height="240">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="101" x="1392" y="944" width="16" height="96">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="102" x="912" y="1040" width="496" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="103" x="912" y="960" width="16" height="80">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="104" x="480" y="448" width="928" height="48">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="105" x="1136" y="384" width="272" height="64">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
+  <object id="106" x="672" y="160" width="320" height="80">
+   <properties>
+    <property name="class" value="blocked"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

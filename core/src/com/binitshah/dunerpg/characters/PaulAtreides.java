@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.binitshah.dunerpg.Controls;
+import com.binitshah.dunerpg.levels.Level;
 
 /**
  * Created by binitshah on 4/14/17.
@@ -21,7 +22,7 @@ public class PaulAtreides extends Player {
     //Information
     private static String spriteSheetName = "paulsprites.png";
 
-    public PaulAtreides(SpriteBatch spriteBatch, Controls controls, float width, float height) {
-        super(spriteSheetName, spriteBatch, controls, width, height);
+    public PaulAtreides(Level level) {
+        super(spriteSheetName, level);
     }
 }
