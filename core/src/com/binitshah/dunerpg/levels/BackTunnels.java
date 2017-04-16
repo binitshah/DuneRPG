@@ -222,6 +222,11 @@ public class BackTunnels extends Level {
         return enemies;
     }
 
+    @Override
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
     private static Vector2 findSpawnPoint(String mapName) {
         try {
             TmxMapLoader tmxMapLoader = new TmxMapLoader();

@@ -214,7 +214,14 @@ public abstract class Player {
     }
 
     private void checkTunnelsItemsLayerForCollisions() {
-
+        for (Item item : level.getItems()) {
+            if (item.isEnabled()) {
+                Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
+                if (Intersector.overlaps(item.getItemBoundary(), playerRec)) {
+                    Gdx.app.debug(TAG, "Item Boundary");
+                }
+            }
+        }
     }
 
     private void checkTunnelsNPCLayerForCollisions() {
