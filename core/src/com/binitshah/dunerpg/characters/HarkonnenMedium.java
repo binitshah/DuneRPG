@@ -12,8 +12,8 @@ public class HarkonnenMedium extends NPC {
     //Information
     private static String spriteSheetName = "Harkonnen2.png";
 
-    public HarkonnenMedium(String id, Level level, float[] npcValues, Rectangle personalBoundary) {
-        super(id, spriteSheetName, level, npcValues, personalBoundary);
+    public HarkonnenMedium(String id, Level level, Rectangle personalBoundary) {
+        super(id, spriteSheetName, level, personalBoundary);
     }
 
 }

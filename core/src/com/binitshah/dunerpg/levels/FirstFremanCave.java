@@ -60,10 +60,10 @@ public class FirstFremanCave extends Level {
 
     @Override
     public int getLayer(String layerName) {
-        if (layerName.equals("collision")) {
-            return 6;
-        } else if (layerName.equals("other")) {
+        if (layerName.equals("other")) {
             return 5;
+        } else if (layerName.equals("walls")) {
+            return 6;
         }
         return -1;
     }

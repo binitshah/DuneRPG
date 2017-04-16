@@ -19,7 +19,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.binitshah.dunerpg.Controls;
+import com.binitshah.dunerpg.item.Item;
 import com.binitshah.dunerpg.levels.Level;
+
+import java.util.ArrayList;
 
 /**
  * Created by binitshah on 4/14/17.
@@ -27,7 +30,7 @@ import com.binitshah.dunerpg.levels.Level;
  *
  */
 
-public class Player {
+public abstract class Player {
 
     //general
     private Level level;
@@ -43,7 +46,7 @@ public class Player {
 
     //Collisions
     private String blockedKey = "blocked";
-    private MapObjects collisionObjects;
+    private MapObjects wallObjects;
     private float[] playerBounds = {-4, -10, 8, 1}; //[0] - xoffset, [1] - yoffset, [2] - width, [3] - height
     private MapObjects otherObjects;
 
@@ -108,7 +111,7 @@ public class Player {
         this.playerVals = mapSpecificPlayerValues;
 
         //Collision
-        collisionObjects = this.level.getTiledMap().getLayers().get(this.level.getLayer("collision")).getObjects();
+        wallObjects = this.level.getTiledMap().getLayers().get(this.level.getLayer("walls")).getObjects();
         otherObjects = this.level.getTiledMap().getLayers().get(this.level.getLayer("other")).getObjects();
     }
 
@@ -139,7 +142,7 @@ public class Player {
                     currentFrame = walkBackward.getKeyFrame(statetime, true);
                     spriteBatch.draw(currentFrame, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     directionLastOriented = Orientation.BACKWARD;
-                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
+                    for (RectangleMapObject rectangleObject : wallObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
                         Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerVals[4] + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
@@ -155,7 +158,7 @@ public class Player {
                     currentFrame = walkForward.getKeyFrame(statetime, true);
                     spriteBatch.draw(currentFrame, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     directionLastOriented = Orientation.FORWARD;
-                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
+                    for (RectangleMapObject rectangleObject : wallObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
                         Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y - playerVals[4] + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
@@ -171,7 +174,7 @@ public class Player {
                     currentFrame = walkLeft.getKeyFrame(statetime, true);
                     spriteBatch.draw(currentFrame, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     directionLastOriented = Orientation.LEFT;
-                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
+                    for (RectangleMapObject rectangleObject : wallObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
                         Rectangle playerRec = new Rectangle(level.getCamera().position.x - playerVals[5] + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
@@ -187,7 +190,7 @@ public class Player {
                     currentFrame = walkRight.getKeyFrame(statetime, true);
                     spriteBatch.draw(currentFrame, playerVals[0], playerVals[1], playerVals[2], playerVals[3]);
                     directionLastOriented = Orientation.RIGHT;
-                    for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
+                    for (RectangleMapObject rectangleObject : wallObjects.getByType(RectangleMapObject.class)) {
                         Rectangle wallRec = rectangleObject.getRectangle();
                         Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerVals[5] + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
                         if (Intersector.overlaps(wallRec, playerRec)) {
@@ -204,9 +207,14 @@ public class Player {
         if (level.getMapName().equals("cave.tmx")) {
             checkCaveOtherLayerForCollisions();
         } else if (level.getMapName().equals("tunnels.tmx")) {
-            checkTunnelsOtherAndItemsLayerForCollisions();
             checkTunnelsNPCLayerForCollisions();
+            checkTunnelsItemsLayerForCollisions();
+            checkTunnelsOtherLayerForCollisions();
         }
+    }
+
+    private void checkTunnelsItemsLayerForCollisions() {
+
     }
 
     private void checkTunnelsNPCLayerForCollisions() {
@@ -222,7 +230,7 @@ public class Player {
         }
     }
 
-    private void checkTunnelsOtherAndItemsLayerForCollisions() {
+    private void checkTunnelsOtherLayerForCollisions() {
         for (RectangleMapObject rectangleObject : otherObjects.getByType(RectangleMapObject.class)) {
             Rectangle otherRec = rectangleObject.getRectangle();
             Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
@@ -265,6 +273,29 @@ public class Player {
             }
         }
     }
+
+    public abstract void addToInventory(Item item);
+    public abstract ArrayList<Item> getInventory();
+    public abstract void removeFromInventory(Item item);
+
+    public abstract void setHealth(int health);
+    public abstract int getHealth();
+
+    public abstract void setWater(int water);
+    public abstract int getWater();
+
+    public abstract void setExperience(int experience);
+    public abstract int getExperience();
+
+    public abstract void setSpice(int spice);
+    public abstract int getSpice();
+
+    public abstract void setAttackPower(int attackPower);
+    public abstract int getAttackPower();
+
+    public abstract void setLevel(int level);
+    public abstract int getLevel();
+
 
     public void dispose() {
         //nothing to dispose of

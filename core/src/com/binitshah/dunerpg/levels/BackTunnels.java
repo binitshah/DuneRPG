@@ -13,6 +13,20 @@ import com.binitshah.dunerpg.characters.HarkonnenMedium;
 import com.binitshah.dunerpg.characters.NPC;
 import com.binitshah.dunerpg.characters.PaulAtreides;
 import com.binitshah.dunerpg.characters.Piter;
+import com.binitshah.dunerpg.item.Item;
+import com.binitshah.dunerpg.item.LargeFood;
+import com.binitshah.dunerpg.item.LargeSpice;
+import com.binitshah.dunerpg.item.LargeWater;
+import com.binitshah.dunerpg.item.Lasgun;
+import com.binitshah.dunerpg.item.MediumFood;
+import com.binitshah.dunerpg.item.MediumSpice;
+import com.binitshah.dunerpg.item.MediumWater;
+import com.binitshah.dunerpg.item.OrangeBiblePage;
+import com.binitshah.dunerpg.item.SmallFood;
+import com.binitshah.dunerpg.item.SmallSpice;
+import com.binitshah.dunerpg.item.SmallWater;
+import com.binitshah.dunerpg.item.StillSuit;
+import com.binitshah.dunerpg.item.Thumper;
 
 import java.util.ArrayList;
 
@@ -41,6 +55,7 @@ public class BackTunnels extends Level {
     //Objects
     private PaulAtreides paulAtreides;
     private ArrayList<NPC> enemies;
+    private ArrayList<Item> items;
 
     public BackTunnels(DuneRPG game) {
         super(mapName, BackTunnels.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
@@ -50,26 +65,30 @@ public class BackTunnels extends Level {
         //load npcs
         enemies = new ArrayList<NPC>();
         ArrayList<RectangleMapObject> boundaries = new ArrayList<RectangleMapObject>();
-        for (RectangleMapObject enemyOrBoundary : getTiledMap().getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+        for (RectangleMapObject enemyOrBoundary : getTiledMap().getLayers().get(getLayer("npcs")).getObjects().getByType(RectangleMapObject.class)) {
             String objectClass = (String) enemyOrBoundary.getProperties().get("class");
             if (objectClass != null) {
                 if (objectClass.equals("boundary")) {
                     boundaries.add(enemyOrBoundary);
                 } else {
                     if (objectClass.equals("Harkonnen1")) {
-                        enemies.add(new HarkonnenEasy(enemyOrBoundary.getName(), this, new float[]{enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44}, enemyOrBoundary.getRectangle()));
+                        Rectangle personalBounds = new Rectangle(enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44);
+                        enemies.add(new HarkonnenEasy(enemyOrBoundary.getName(), this, personalBounds));
                     } else if (objectClass.equals("Harkonnen2")) {
-                        enemies.add(new HarkonnenMedium(enemyOrBoundary.getName(), this, new float[]{enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44}, enemyOrBoundary.getRectangle()));
+                        Rectangle personalBounds = new Rectangle(enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44);
+                        enemies.add(new HarkonnenMedium(enemyOrBoundary.getName(), this, personalBounds));
                     } else if (objectClass.equals("Harkonnen3")) {
-                        enemies.add(new HarkonnenHard(enemyOrBoundary.getName(), this, new float[]{enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44}, enemyOrBoundary.getRectangle()));
+                        Rectangle personalBounds = new Rectangle(enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44);
+                        enemies.add(new HarkonnenHard(enemyOrBoundary.getName(), this, personalBounds));
                     } else if (objectClass.equals("Piter")) {
-                        enemies.add(new Piter(enemyOrBoundary.getName(), this, new float[]{enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44}, enemyOrBoundary.getRectangle()));
+                        Rectangle personalBounds = new Rectangle(enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44);
+                        enemies.add(new Piter(enemyOrBoundary.getName(), this, personalBounds));
                     } else {
                         Gdx.app.debug(TAG, "Unable to find objec through class:: classid: " + objectClass + " | name: " + enemyOrBoundary.getName() + " | bounds: " + enemyOrBoundary.getRectangle().toString());
                     }
                 }
             } else {
-                Gdx.app.debug(TAG, "class id was null:: name: " + enemyOrBoundary.getName() + " | bounds: " + enemyOrBoundary.getRectangle().toString());
+                Gdx.app.debug(TAG, "class id for enemy was null:: name: " + enemyOrBoundary.getName() + " | bounds: " + enemyOrBoundary.getRectangle().toString());
             }
         }
 
@@ -104,6 +123,57 @@ public class BackTunnels extends Level {
             }
         }
 
+        //load items
+        items = new ArrayList<Item>();
+        for (RectangleMapObject item : getTiledMap().getLayers().get(getLayer("items")).getObjects().getByType(RectangleMapObject.class)) {
+            String objectClass = (String) item.getProperties().get("class");
+            if (objectClass != null) {
+                if (objectClass.equals("thumper")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new Thumper(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("stillsuit")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new StillSuit(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("smallspice")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new SmallSpice(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("mediumspice")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new MediumSpice(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("largespice")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new LargeSpice(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("smallwater")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new SmallWater(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("mediumwater")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new MediumWater(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("largewater")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new LargeWater(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("smallfood")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new SmallFood(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("mediumfood")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new MediumFood(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("largefood")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new LargeFood(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("lasgun")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new Lasgun(item.getName(), this, itemBoundary));
+                } else if (objectClass.equals("orangebible")) {
+                    Rectangle itemBoundary = new Rectangle(item.getRectangle().getX(), item.getRectangle().getY(), 44, 44);
+                    items.add(new OrangeBiblePage(item.getName(), this, itemBoundary));
+                } else {
+                    Gdx.app.debug(TAG, "Unable to find item through class:: classid: " + objectClass + " | name: " + item.getName() + " | bounds: " + item.getRectangle().toString());
+                }
+            } else {
+                Gdx.app.debug(TAG, "class id for item was null:: name: " + item.getName() + " | bounds: " + item.getRectangle().toString());
+            }
+        }
     }
 
     @Override
@@ -113,6 +183,12 @@ public class BackTunnels extends Level {
         for (NPC enemy : enemies) {
             if (enemy.isEnabled()) {
                 enemy.draw(delta);
+            }
+        }
+
+        for (Item item : items) {
+            if (item.isEnabled()) {
+                item.draw(delta);
             }
         }
     }
@@ -129,8 +205,12 @@ public class BackTunnels extends Level {
 
     @Override
     public int getLayer(String layerName) {
-        if (layerName.equals("collision")) {
+        if (layerName.equals("npcs")) {
+            return 2;
+        } else if (layerName.equals("walls")) {
             return 3;
+        } else if (layerName.equals("items")) {
+            return 4;
         } else if (layerName.equals("other")) {
             return 5;
         }

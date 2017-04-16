@@ -12,7 +12,7 @@ public class HarkonnenEasy extends NPC {
     //Information
     private static String spriteSheetName = "Harkonnen1.png";
 
-    public HarkonnenEasy(String id, Level level, float[] npcValues, Rectangle personalBoundary) {
-        super(id, spriteSheetName, level, npcValues, personalBoundary);
+    public HarkonnenEasy(String id, Level level, Rectangle personalBoundary) {
+        super(id, spriteSheetName, level, personalBoundary);
     }
 }

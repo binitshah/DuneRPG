@@ -12,7 +12,7 @@ public class Piter extends NPC {
     //Information
     private static String spriteSheetName = "Piter.png";
 
-    public Piter(String id, Level level, float[] npcValues, Rectangle personalBoundary) {
-        super(id, spriteSheetName, level, npcValues, personalBoundary);
+    public Piter(String id, Level level, Rectangle personalBoundary) {
+        super(id, spriteSheetName, level, personalBoundary);
     }
 }

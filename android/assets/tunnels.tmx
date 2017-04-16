@@ -3236,57 +3236,57 @@
  <objectgroup name="Items">
   <object id="658" name="object one" x="64" y="608" width="32" height="32">
    <properties>
-    <property name="class" value="Small_Bottle_Of_Water"/>
+    <property name="class" value="smallwater"/>
    </properties>
   </object>
   <object id="659" name="object three" x="1760" y="768" width="32" height="32">
    <properties>
-    <property name="class" value="Medium_Amount_Of_Spice"/>
+    <property name="class" value="mediumspice"/>
    </properties>
   </object>
   <object id="665" name="object five" x="1472" y="1760" width="32" height="32">
    <properties>
-    <property name="class" value="Small_Bottle_Of_Water"/>
+    <property name="class" value="smallwater"/>
    </properties>
   </object>
   <object id="666" name="object eight" x="2560" y="1920" width="32" height="32">
    <properties>
-    <property name="class" value="Small_Amount_Of_Spice"/>
+    <property name="class" value="smallspice"/>
    </properties>
   </object>
   <object id="667" name="object seven" x="2528" y="1920" width="32" height="32">
    <properties>
-    <property name="class" value="Small_Bottle_Of_Water"/>
+    <property name="class" value="smallwater"/>
    </properties>
   </object>
   <object id="668" name="object 10" x="1664" y="3072" width="32" height="32">
    <properties>
-    <property name="class" value="Medium_Bottle_Of_Water"/>
+    <property name="class" value="mediumwater"/>
    </properties>
   </object>
   <object id="670" name="object nine" x="1824" y="2560" width="32" height="32">
    <properties>
-    <property name="class" value="Medium_Recovery_Potion"/>
+    <property name="class" value="mediumfood"/>
    </properties>
   </object>
   <object id="671" name="item two" x="1760" y="800" width="32" height="32">
    <properties>
-    <property name="class" value="Medium_Bottle_Of_Water"/>
+    <property name="class" value="mediumwater"/>
    </properties>
   </object>
   <object id="672" name="object four" x="3040" y="1248" width="32" height="32">
    <properties>
-    <property name="class" value="Small_Amount_Of_Spice"/>
+    <property name="class" value="smallspice"/>
    </properties>
   </object>
   <object id="677" name="object 11" x="3072" y="2816" width="32" height="32">
    <properties>
-    <property name="class" value="Large_Recovery_Potion"/>
+    <property name="class" value="largefood"/>
    </properties>
   </object>
   <object id="674" name="object six" x="2432" y="1920" width="32" height="32">
    <properties>
-    <property name="class" value="Small_Recovery_Potion"/>
+    <property name="class" value="smallfood"/>
    </properties>
   </object>
  </objectgroup>

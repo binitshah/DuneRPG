@@ -45,10 +45,9 @@ public class NPC {
     private OrthographicCamera npcCamera;
     private SpriteBatch spriteBatch;
     private float statetime = 0;
-    private float[] npcVals;
 
 
-    public NPC (String id, String spriteSheetName, Level level, float[] npcVals, Rectangle personalBoundary) {
+    public NPC (String id, String spriteSheetName, Level level, Rectangle personalBoundary) {
         //General
         this.id = id;
         this.level = level;
@@ -95,7 +94,6 @@ public class NPC {
         this.directionLastOriented = NPC.Orientation.FORWARD;
         this.npcCamera = new OrthographicCamera(this.level.getWidth(), this.level.getHeight());
         this.npcCamera.position.set(this.level.getWidth()/2, this.level.getHeight()/2, 0);
-        this.npcVals = npcVals;
     }
 
     public void draw(float delta) {
@@ -114,16 +112,16 @@ public class NPC {
     private void drawNPCIdle() {
         switch (directionLastOriented) {
             case FORWARD:
-                spriteBatch.draw(stillForward, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
+                spriteBatch.draw(stillForward, personalBoundary.getX(), personalBoundary.getY(), personalBoundary.getWidth(), personalBoundary.getHeight());
                 break;
             case BACKWARD:
-                spriteBatch.draw(stillBackward, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
+                spriteBatch.draw(stillBackward, personalBoundary.getX(), personalBoundary.getY(), personalBoundary.getWidth(), personalBoundary.getHeight());
                 break;
             case LEFT:
-                spriteBatch.draw(stillLeft, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
+                spriteBatch.draw(stillLeft, personalBoundary.getX(), personalBoundary.getY(), personalBoundary.getWidth(), personalBoundary.getHeight());
                 break;
             case RIGHT:
-                spriteBatch.draw(stillRight, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
+                spriteBatch.draw(stillRight, personalBoundary.getX(), personalBoundary.getY(), personalBoundary.getWidth(), personalBoundary.getHeight());
                 break;
         }
     }
