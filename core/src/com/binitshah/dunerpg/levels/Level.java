@@ -18,6 +18,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.binitshah.dunerpg.Controls;
+import com.binitshah.dunerpg.characters.NPC;
+
+import java.util.ArrayList;
 
 /**
  * Created by binitshah on 4/14/17.
@@ -157,6 +160,7 @@ public abstract class Level implements Screen {
     public abstract void drawLevelAssets(float delta);
     public abstract void disposeAssets();
     public abstract int getLayer(String layerName);
+    public abstract ArrayList<NPC> getEnemies();
 
     private class OrthogonalTiledMapWithAssetsRenderer extends OrthogonalTiledMapRenderer {
         private int split;

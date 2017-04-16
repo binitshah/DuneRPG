@@ -8,7 +8,10 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.binitshah.dunerpg.DuneRPG;
+import com.binitshah.dunerpg.characters.NPC;
 import com.binitshah.dunerpg.characters.PaulAtreides;
+
+import java.util.ArrayList;
 
 /**
  * Created by binitshah on 4/14/17.
@@ -31,6 +34,7 @@ public class FirstFremanCave extends Level {
 
     //Objects
     private PaulAtreides paulAtreides;
+    private ArrayList<NPC> enemies;
 
     public FirstFremanCave(DuneRPG game) {
         super(mapName, FirstFremanCave.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
@@ -62,6 +66,11 @@ public class FirstFremanCave extends Level {
             return 5;
         }
         return -1;
+    }
+
+    @Override
+    public ArrayList<NPC> getEnemies() {
+        return enemies;
     }
 
     private static Vector2 findSpawnPoint(String mapName) {

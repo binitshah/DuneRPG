@@ -92,19 +92,19 @@ public class Controls implements InputProcessor {
         switch (directionPressed) {
             case LEFT:
                 //mainCamera.translate(-3, 0);
-                Gdx.app.debug(TAG, "LEFT Button Pressed");
+                //Gdx.app.debug(TAG, "LEFT Button Pressed");
                 break;
             case RIGHT:
                 //mainCamera.translate(3, 0);
-                Gdx.app.debug(TAG, "RIGHT Button Pressed");
+                //Gdx.app.debug(TAG, "RIGHT Button Pressed");
                 break;
             case UP:
                 //mainCamera.translate(0, 2);
-                Gdx.app.debug(TAG, "UP Button Pressed");
+                //Gdx.app.debug(TAG, "UP Button Pressed");
                 break;
             case DOWN:
                 //mainCamera.translate(0, -2);
-                Gdx.app.debug(TAG, "DOWN Button Pressed");
+                //Gdx.app.debug(TAG, "DOWN Button Pressed");
                 break;
         }
 

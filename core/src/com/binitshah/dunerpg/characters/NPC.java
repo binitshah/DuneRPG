@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.binitshah.dunerpg.Controls;
 import com.binitshah.dunerpg.levels.Level;
 
+import java.util.Arrays;
+
 /**
  * Created by binitshah on 4/16/17.
  *
@@ -25,6 +27,10 @@ public class NPC {
     //general
     private Level level;
     private String id;
+    private boolean isEnabled = true;
+    private boolean isEngaged = false;
+    private Rectangle activationBoundary;
+    private Rectangle personalBoundary;
     private final String TAG = "LOGDUNERPG"; //todo: remove
 
     //Motion
@@ -42,9 +48,11 @@ public class NPC {
     private float[] npcVals;
 
 
-    public NPC (String spriteSheetName, Level level, float[] npcVals) {
+    public NPC (String id, String spriteSheetName, Level level, float[] npcVals, Rectangle personalBoundary) {
         //General
+        this.id = id;
         this.level = level;
+        this.personalBoundary = personalBoundary;
         Gdx.app.setLogLevel(Application.LOG_DEBUG); //todo: remove
 
         //Motion
@@ -91,8 +99,19 @@ public class NPC {
     }
 
     public void draw(float delta) {
-        spriteBatch.setProjectionMatrix(npcCamera.projection);
+        //Gdx.app.debug(TAG, "Drawn at: " + Arrays.toString(npcVals));
+        spriteBatch.setProjectionMatrix(level.getCamera().combined);
         statetime += delta;
+        if (isEnabled) {
+            if (isEngaged) {
+                drawNPCEngaged();
+            } else {
+                drawNPCIdle();
+            }
+        }
+    }
+
+    private void drawNPCIdle() {
         switch (directionLastOriented) {
             case FORWARD:
                 spriteBatch.draw(stillForward, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
@@ -107,101 +126,41 @@ public class NPC {
                 spriteBatch.draw(stillRight, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
                 break;
         }
+    }
 
-//        boolean isColliding = false;
-//        TextureRegion currentFrame;
-//        switch (controls.getDirectionPressed()) {
-//            case UP:
-//                isColliding = false;
-//                currentFrame = walkBackward.getKeyFrame(statetime, true);
-//                spriteBatch.draw(currentFrame, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
-//                directionLastOriented = Player.Orientation.BACKWARD;
-//                for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
-//                    Rectangle wallRec = rectangleObject.getRectangle();
-//                    Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + npcVals[4] + playerBounds[1], playerBounds[2], playerBounds[3]);
-//                    if (Intersector.overlaps(wallRec, playerRec)) {
-//                        isColliding = true;
-//                    }
-//                }
-//                if (!isColliding) {
-//                    level.getCamera().translate(0, npcVals[4]);
-//                }
-//                break;
-//            case DOWN:
-//                isColliding = false;
-//                currentFrame = walkForward.getKeyFrame(statetime, true);
-//                spriteBatch.draw(currentFrame, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
-//                directionLastOriented = Player.Orientation.FORWARD;
-//                for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
-//                    Rectangle wallRec = rectangleObject.getRectangle();
-//                    Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y - npcVals[4] + playerBounds[1], playerBounds[2], playerBounds[3]);
-//                    if (Intersector.overlaps(wallRec, playerRec)) {
-//                        isColliding = true;
-//                    }
-//                }
-//                if (!isColliding) {
-//                    level.getCamera().translate(0, -npcVals[4]);
-//                }
-//                break;
-//            case LEFT:
-//                isColliding = false;
-//                currentFrame = walkLeft.getKeyFrame(statetime, true);
-//                spriteBatch.draw(currentFrame, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
-//                directionLastOriented = Player.Orientation.LEFT;
-//                for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
-//                    Rectangle wallRec = rectangleObject.getRectangle();
-//                    Rectangle playerRec = new Rectangle(level.getCamera().position.x - npcVals[5] + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
-//                    if (Intersector.overlaps(wallRec, playerRec)) {
-//                        isColliding = true;
-//                    }
-//                }
-//                if (!isColliding) {
-//                    level.getCamera().translate(-npcVals[5], 0);
-//                }
-//                break;
-//            case RIGHT:
-//                isColliding = false;
-//                currentFrame = walkRight.getKeyFrame(statetime, true);
-//                spriteBatch.draw(currentFrame, npcVals[0], npcVals[1], npcVals[2], npcVals[3]);
-//                directionLastOriented = Player.Orientation.RIGHT;
-//                for (RectangleMapObject rectangleObject : collisionObjects.getByType(RectangleMapObject.class)) {
-//                    Rectangle wallRec = rectangleObject.getRectangle();
-//                    Rectangle playerRec = new Rectangle(level.getCamera().position.x + npcVals[5] + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
-//                    if (Intersector.overlaps(wallRec, playerRec)) {
-//                        isColliding = true;
-//                    }
-//                }
-//                if (!isColliding) {
-//                    level.getCamera().translate(npcVals[5], 0);
-//                }
-//                break;
-//        }
+    private void drawNPCEngaged() {
 
-//        for (RectangleMapObject rectangleObject : otherObjects.getByType(RectangleMapObject.class)) {
-//            Rectangle otherRec = rectangleObject.getRectangle();
-//            Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
-//            if (Intersector.overlaps(otherRec, playerRec)) {
-//                String objectClass = (String) rectangleObject.getProperties().get("class");
-//                if (objectClass != null) {
-//                    if (objectClass.equals("teleport")) {
-//                        if (rectangleObject.getName().equals("Teleport_To_Lava_Island")) {
-//                            Rectangle spawnLavaIsland = ((RectangleMapObject) otherObjects.get("Spawn_Lava_Island")).getRectangle();
-//                            level.getCamera().position.set(spawnLavaIsland.getX() + spawnLavaIsland.getWidth()/2, spawnLavaIsland.getY() + spawnLavaIsland.getHeight()/2, 0.0f);
-//                        } else if (rectangleObject.getName().equals("Teleport_From_Lava_Island")) {
-//                            Rectangle spawnFromLavaIsland = ((RectangleMapObject) otherObjects.get("Spawn_From_Lava_Island")).getRectangle();
-//                            level.getCamera().position.set(spawnFromLavaIsland.getX() + spawnFromLavaIsland.getWidth()/2, spawnFromLavaIsland.getY() + spawnFromLavaIsland.getHeight()/2, 0.0f);
-//                        } else if (rectangleObject.getName().equals("Teleport_From_Water_Island")) {
-//                            Rectangle spawnFromWaterIsland = ((RectangleMapObject) otherObjects.get("Spawn_From_Water_Island")).getRectangle();
-//                            level.getCamera().position.set(spawnFromWaterIsland.getX() + spawnFromWaterIsland.getWidth()/2, spawnFromWaterIsland.getY() + spawnFromWaterIsland.getHeight()/2, 0.0f);
-//                        } else if (rectangleObject.getName().equals("Teleport_To_Water_Island")) {
-//                            Rectangle spawnWaterIsland = ((RectangleMapObject) otherObjects.get("Spawn_Water_Island")).getRectangle();
-//                            level.getCamera().position.set(spawnWaterIsland.getX() + spawnWaterIsland.getWidth()/2, spawnWaterIsland.getY() + spawnWaterIsland.getHeight()/2, 0.0f);
-//                        }
-//                    } else if (objectClass.equals("exit")) {
-//                        level.endLevel();
-//                    }
-//                }
-//            }
-//        }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public boolean isEngaged() {
+        return isEngaged;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public void setEngaged(boolean engaged) {
+        isEngaged = engaged;
+    }
+
+    public Rectangle getActivationBoundary() {
+        return activationBoundary;
+    }
+
+    public void setActivationBoundary(Rectangle activationBoundary) {
+        this.activationBoundary = activationBoundary;
+    }
+
+    public Rectangle getPersonalBoundary() {
+        return personalBoundary;
     }
 }

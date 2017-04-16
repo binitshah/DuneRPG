@@ -7,12 +7,12 @@ import com.binitshah.dunerpg.levels.Level;
  * Created by binitshah on 4/16/17.
  */
 
-public class HarkonnenEasy extends NPC {
+public class Piter extends NPC {
 
     //Information
-    private static String spriteSheetName = "Harkonnen1.png";
+    private static String spriteSheetName = "Piter.png";
 
-    public HarkonnenEasy(String id, Level level, float[] npcValues, Rectangle personalBoundary) {
+    public Piter(String id, Level level, float[] npcValues, Rectangle personalBoundary) {
         super(id, spriteSheetName, level, npcValues, personalBoundary);
     }
 }

@@ -205,6 +205,20 @@ public class Player {
             checkCaveOtherLayerForCollisions();
         } else if (level.getMapName().equals("tunnels.tmx")) {
             checkTunnelsOtherAndItemsLayerForCollisions();
+            checkTunnelsNPCLayerForCollisions();
+        }
+    }
+
+    private void checkTunnelsNPCLayerForCollisions() {
+        for (NPC enemy : level.getEnemies()) {
+            if (enemy.isEnabled()) {
+                Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
+                if (Intersector.overlaps(enemy.getPersonalBoundary(), playerRec)) {
+                    Gdx.app.debug(TAG, "PersonalBounds");
+                } else if (Intersector.overlaps(enemy.getActivationBoundary(), playerRec)) {
+                    Gdx.app.debug(TAG, "ActivationBound");
+                }
+            }
         }
     }
 
