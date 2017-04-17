@@ -1,6 +1,7 @@
 package com.binitshah.dunerpg.levels;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -15,6 +16,7 @@ import com.binitshah.dunerpg.characters.NPC;
 import com.binitshah.dunerpg.characters.PaulAtreides;
 import com.binitshah.dunerpg.characters.SmugglerEasy;
 import com.binitshah.dunerpg.characters.SmugglerHard;
+import com.binitshah.dunerpg.characters.SmugglerLeader;
 import com.binitshah.dunerpg.characters.SmugglerMedium;
 import com.binitshah.dunerpg.item.Item;
 import com.binitshah.dunerpg.item.LargeFood;
@@ -57,12 +59,15 @@ public class MinerWarehouse extends Level {
     private PaulAtreides paulAtreides;
     private ArrayList<NPC> npcs;
     private ArrayList<Item> items;
+    private Music levelMusic;
 
     public MinerWarehouse(DuneRPG game) {
         super(mapName, MinerWarehouse.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
         this.game = game;
         this.paulAtreides = new PaulAtreides(this, mapSpecificPlayerValues);
-
+        levelMusic = Gdx.audio.newMusic(Gdx.files.internal("minerwarehousemusic.mp3"));
+        levelMusic.setLooping(true);
+        levelMusic.play();
 
         //load npcs
         npcs = new ArrayList<NPC>();
@@ -78,6 +83,9 @@ public class MinerWarehouse extends Level {
                 } else if (objectClass.equals("Smuggler3")) {
                     Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
                     npcs.add(new SmugglerHard(npcOrBound.getName(), this, personalBounds));
+                } else if (objectClass.equals("SmugglerLeader")) {
+                    Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
+                    npcs.add(new SmugglerLeader(npcOrBound.getName(), this, personalBounds));
                 } else {
                     Gdx.app.debug(TAG, "Unable to find objec through class:: classid: " + objectClass + " | name: " + npcOrBound.getName() + " | bounds: " + npcOrBound.getRectangle().toString());
                 }
@@ -189,12 +197,14 @@ public class MinerWarehouse extends Level {
 
     @Override
     public void endLevel() {
+        levelMusic.stop();
         FirstFremanCave nextlevel = new FirstFremanCave(game);
         game.setScreen(nextlevel);
     }
 
     @Override
     public void disposeAssets() {
+        levelMusic.dispose();
         paulAtreides.dispose();
     }
 
@@ -222,6 +232,11 @@ public class MinerWarehouse extends Level {
     @Override
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    @Override
+    public DuneRPG getGame() {
+        return game;
     }
 
     private static Vector2 findSpawnPoint(String mapName) {

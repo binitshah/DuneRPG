@@ -30,8 +30,13 @@ public class DuneRPG extends Game {
 	
 	@Override
 	public void create () {
-		KynesRoom firstLevel = new KynesRoom(this);
-		setScreen(firstLevel);
+		if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+			BackTunnels firstLevel = new BackTunnels(this);
+			setScreen(firstLevel);
+		} else {
+			KynesRoom firstLevel = new KynesRoom(this);
+			setScreen(firstLevel);
+		}
 	}
 
 	@Override

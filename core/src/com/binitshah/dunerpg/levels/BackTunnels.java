@@ -1,6 +1,8 @@
 package com.binitshah.dunerpg.levels;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -56,11 +58,15 @@ public class BackTunnels extends Level {
     private PaulAtreides paulAtreides;
     private ArrayList<NPC> npcs;
     private ArrayList<Item> items;
+    private Music levelMusic;
 
     public BackTunnels(DuneRPG game) {
         super(mapName, BackTunnels.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
         this.game = game;
         this.paulAtreides = new PaulAtreides(this, mapSpecificPlayerValues);
+        levelMusic = Gdx.audio.newMusic(Gdx.files.internal("backtunnelsmusic.mp3"));
+        levelMusic.setLooping(true);
+        levelMusic.play();
 
         //load npcs
         npcs = new ArrayList<NPC>();
@@ -195,12 +201,19 @@ public class BackTunnels extends Level {
 
     @Override
     public void endLevel() {
-        SmugglerDesert nextlevel = new SmugglerDesert(game);
-        game.setScreen(nextlevel);
+        levelMusic.stop();
+        if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+            FirstFremanCave nextLevel = new FirstFremanCave(game);
+            game.setScreen(nextLevel);
+        } else {
+            SmugglerDesert nextlevel = new SmugglerDesert(game);
+            game.setScreen(nextlevel);
+        }
     }
 
     @Override
     public void disposeAssets() {
+        levelMusic.dispose();
         paulAtreides.dispose();
     }
 
@@ -226,6 +239,11 @@ public class BackTunnels extends Level {
     @Override
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    @Override
+    public DuneRPG getGame() {
+        return game;
     }
 
     private static Vector2 findSpawnPoint(String mapName) {

@@ -11,9 +11,19 @@ public class HarkonnenHard extends NPC {
 
     //Information
     private static String spriteSheetName = "Harkonnen3.png";
+    private int expChange = 35;
 
     public HarkonnenHard(String id, Level level, Rectangle personalBoundary) {
         super(id, spriteSheetName, level, personalBoundary);
     }
 
+    @Override
+    public void updatePlayerWon(Player player) {
+        player.setExperience(player.getExperience() + expChange);
+    }
+
+    @Override
+    public void updatePlayerLose(Player player) {
+        player.setExperience(player.getExperience() - expChange);
+    }
 }

@@ -220,6 +220,11 @@ public class KynesRoom extends Level {
     }
 
     @Override
+    public DuneRPG getGame() {
+        return game;
+    }
+
+    @Override
     public void disposeAssets() {
         paulAtreides.dispose();
     }

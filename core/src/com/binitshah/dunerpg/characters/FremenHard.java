@@ -11,8 +11,19 @@ public class FremenHard extends NPC {
 
     //Information
     private static String spriteSheetName = "Fremen3.png";
+    private int expChange = 55;
 
     public FremenHard(String id, Level level, Rectangle personalBoundary) {
         super(id, spriteSheetName, level, personalBoundary);
+    }
+
+    @Override
+    public void updatePlayerWon(Player player) {
+        player.setExperience(player.getExperience() + expChange);
+    }
+
+    @Override
+    public void updatePlayerLose(Player player) {
+        player.setExperience(player.getExperience() - expChange);
     }
 }

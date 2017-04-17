@@ -22,7 +22,7 @@ import java.util.Arrays;
  * Generic Non-Person Character
  */
 
-public class NPC {
+public abstract class NPC {
 
     //general
     private Level level;
@@ -96,6 +96,11 @@ public class NPC {
         this.npcCamera.position.set(this.level.getWidth()/2, this.level.getHeight()/2, 0);
     }
 
+    public void drawSideSequence(float delta, SpriteBatch sideSeqSpriteBatch) {
+        statetime += delta;
+        sideSeqSpriteBatch.draw(stillForward, level.getWidth()*0.2f, - level.getHeight()*0.1f, 100, 100);
+    }
+
     public void draw(float delta) {
         //Gdx.app.debug(TAG, "Drawn at: " + Arrays.toString(npcVals));
         spriteBatch.setProjectionMatrix(level.getCamera().combined);
@@ -161,4 +166,7 @@ public class NPC {
     public Rectangle getPersonalBoundary() {
         return personalBoundary;
     }
+
+    public abstract void updatePlayerWon(Player player);
+    public abstract void updatePlayerLose(Player player);
 }

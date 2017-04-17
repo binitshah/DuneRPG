@@ -2,6 +2,7 @@ package com.binitshah.dunerpg.levels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -59,11 +60,15 @@ public class SecondFremenCave extends Level {
     private PaulAtreides paulAtreides;
     private ArrayList<NPC> npcs;
     private ArrayList<Item> items;
+    private Music levelMusic;
 
     public SecondFremenCave(DuneRPG game) {
         super(mapName, SecondFremenCave.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
         this.game = game;
         this.paulAtreides = new PaulAtreides(this, mapSpecificPlayerValues);
+        levelMusic = Gdx.audio.newMusic(Gdx.files.internal("secondcavemusic.mp3"));
+        levelMusic.setLooping(true);
+        levelMusic.play();
 
         //load npcs
         npcs = new ArrayList<NPC>();
@@ -196,11 +201,13 @@ public class SecondFremenCave extends Level {
 
     @Override
     public void endLevel() {
+        levelMusic.stop();
         //Not sure yet..
     }
 
     @Override
     public void disposeAssets() {
+        levelMusic.dispose();
         paulAtreides.dispose();
     }
 
@@ -228,6 +235,11 @@ public class SecondFremenCave extends Level {
     @Override
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    @Override
+    public DuneRPG getGame() {
+        return game;
     }
 
     private static Vector2 findSpawnPoint(String mapName) {

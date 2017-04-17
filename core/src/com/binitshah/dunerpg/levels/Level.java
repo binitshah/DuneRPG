@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.binitshah.dunerpg.Controls;
+import com.binitshah.dunerpg.DuneRPG;
 import com.binitshah.dunerpg.characters.NPC;
 import com.binitshah.dunerpg.item.Item;
 
@@ -163,6 +164,7 @@ public abstract class Level implements Screen {
     public abstract int getLayer(String layerName);
     public abstract ArrayList<NPC> getNpcs();
     public abstract ArrayList<Item> getItems();
+    public abstract DuneRPG getGame();
 
     private class OrthogonalTiledMapWithAssetsRenderer extends OrthogonalTiledMapRenderer {
         private int split;

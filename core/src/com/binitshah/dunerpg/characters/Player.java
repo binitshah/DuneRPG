@@ -19,10 +19,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.binitshah.dunerpg.Controls;
+import com.binitshah.dunerpg.SideSequence;
 import com.binitshah.dunerpg.item.Item;
 import com.binitshah.dunerpg.levels.Level;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by binitshah on 4/14/17.
@@ -113,6 +115,11 @@ public abstract class Player {
         //Collision
         wallObjects = this.level.getTiledMap().getLayers().get(this.level.getLayer("walls")).getObjects();
         otherObjects = this.level.getTiledMap().getLayers().get(this.level.getLayer("other")).getObjects();
+    }
+
+    public void drawSideSequence(float delta, SpriteBatch sideSeqSpriteBatch) {
+        statetime += delta;
+        sideSeqSpriteBatch.draw(stillForward, - level.getWidth()*0.3f, - level.getHeight()*0.1f, 100, 100);
     }
 
     public void draw(float delta) {
@@ -218,7 +225,8 @@ public abstract class Player {
             if (item.isEnabled()) {
                 Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
                 if (Intersector.overlaps(item.getItemBoundary(), playerRec)) {
-                    Gdx.app.debug(TAG, "Item Boundary");
+                    item.changePlayer(this);
+                    item.setEnabled(false);
                 }
             }
         }
@@ -230,8 +238,24 @@ public abstract class Player {
                 Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
                 if (Intersector.overlaps(npc.getPersonalBoundary(), playerRec)) {
                     Gdx.app.debug(TAG, "PersonalBounds");
+                    //level.getGame().setScreen(new SideSequence(level, this, npc));
+                    Random random = new Random();
+                    boolean playerWon = random.nextBoolean();
+                    if (playerWon) {
+                        npc.updatePlayerWon(this);
+                    } else {
+                        npc.updatePlayerLose(this);
+                    }
+                    npc.setEnabled(false);
                 } else if (Intersector.overlaps(npc.getActivationBoundary(), playerRec)) {
                     Gdx.app.debug(TAG, "ActivationBound");
+                    Random random = new Random();
+                    boolean playerWon = random.nextBoolean();
+                    if (playerWon) {
+                        npc.updatePlayerWon(this);
+                    } else {
+                        npc.updatePlayerLose(this);
+                    }
                 }
             }
         }

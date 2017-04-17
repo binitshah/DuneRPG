@@ -77,6 +77,14 @@ public class PaulAtreides extends Player {
     @Override
     public void setExperience(int experience) {
         this.experience = experience;
+
+        if (this.experience > 100) {
+            this.experience = this.experience % 100;
+            setSpice(getSpice() + 10);
+            setAttackPower(getAttackPower() + 10);
+            setHealth(getHealth() + 20);
+            setWater(getWater() + 15);
+        }
     }
 
     @Override
