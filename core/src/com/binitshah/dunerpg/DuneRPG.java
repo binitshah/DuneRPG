@@ -22,15 +22,18 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.binitshah.dunerpg.levels.BackTunnels;
 import com.binitshah.dunerpg.levels.FirstFremanCave;
+import com.binitshah.dunerpg.levels.KynesRoom;
 
 public class DuneRPG extends Game {
 	
 	@Override
 	public void create () {
-        BackTunnels firstLevel = new BackTunnels(this);
-        setScreen(firstLevel);
-//		FirstFremanCave firstLevel = new FirstFremanCave(this);
+//		KynesRoom firstLevel = new KynesRoom(this);
 //		setScreen(firstLevel);
+//      BackTunnels firstLevel = new BackTunnels(this);
+//      setScreen(firstLevel);
+		FirstFremanCave firstLevel = new FirstFremanCave(this);
+		setScreen(firstLevel);
 	}
 
 	@Override

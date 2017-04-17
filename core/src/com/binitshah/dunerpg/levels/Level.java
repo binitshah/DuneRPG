@@ -161,7 +161,7 @@ public abstract class Level implements Screen {
     public abstract void drawLevelAssets(float delta);
     public abstract void disposeAssets();
     public abstract int getLayer(String layerName);
-    public abstract ArrayList<NPC> getEnemies();
+    public abstract ArrayList<NPC> getNpcs();
     public abstract ArrayList<Item> getItems();
 
     private class OrthogonalTiledMapWithAssetsRenderer extends OrthogonalTiledMapRenderer {

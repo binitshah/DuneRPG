@@ -204,16 +204,16 @@ public abstract class Player {
             }
         }
 
+        checkNPCLayerForCollisions();
+        checkItemsLayerForCollisions();
         if (level.getMapName().equals("cave.tmx")) {
             checkCaveOtherLayerForCollisions();
         } else if (level.getMapName().equals("tunnels.tmx")) {
-            checkTunnelsNPCLayerForCollisions();
-            checkTunnelsItemsLayerForCollisions();
             checkTunnelsOtherLayerForCollisions();
         }
     }
 
-    private void checkTunnelsItemsLayerForCollisions() {
+    private void checkItemsLayerForCollisions() {
         for (Item item : level.getItems()) {
             if (item.isEnabled()) {
                 Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
@@ -224,13 +224,13 @@ public abstract class Player {
         }
     }
 
-    private void checkTunnelsNPCLayerForCollisions() {
-        for (NPC enemy : level.getEnemies()) {
-            if (enemy.isEnabled()) {
+    private void checkNPCLayerForCollisions() {
+        for (NPC npc : level.getNpcs()) {
+            if (npc.isEnabled()) {
                 Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);
-                if (Intersector.overlaps(enemy.getPersonalBoundary(), playerRec)) {
+                if (Intersector.overlaps(npc.getPersonalBoundary(), playerRec)) {
                     Gdx.app.debug(TAG, "PersonalBounds");
-                } else if (Intersector.overlaps(enemy.getActivationBoundary(), playerRec)) {
+                } else if (Intersector.overlaps(npc.getActivationBoundary(), playerRec)) {
                     Gdx.app.debug(TAG, "ActivationBound");
                 }
             }

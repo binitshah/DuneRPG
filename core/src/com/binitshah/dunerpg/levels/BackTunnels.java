@@ -54,7 +54,7 @@ public class BackTunnels extends Level {
 
     //Objects
     private PaulAtreides paulAtreides;
-    private ArrayList<NPC> enemies;
+    private ArrayList<NPC> npcs;
     private ArrayList<Item> items;
 
     public BackTunnels(DuneRPG game) {
@@ -63,32 +63,32 @@ public class BackTunnels extends Level {
         this.paulAtreides = new PaulAtreides(this, mapSpecificPlayerValues);
 
         //load npcs
-        enemies = new ArrayList<NPC>();
+        npcs = new ArrayList<NPC>();
         ArrayList<RectangleMapObject> boundaries = new ArrayList<RectangleMapObject>();
-        for (RectangleMapObject enemyOrBoundary : getTiledMap().getLayers().get(getLayer("npcs")).getObjects().getByType(RectangleMapObject.class)) {
-            String objectClass = (String) enemyOrBoundary.getProperties().get("class");
+        for (RectangleMapObject npcOrBound : getTiledMap().getLayers().get(getLayer("npcs")).getObjects().getByType(RectangleMapObject.class)) {
+            String objectClass = (String) npcOrBound.getProperties().get("class");
             if (objectClass != null) {
                 if (objectClass.equals("boundary")) {
-                    boundaries.add(enemyOrBoundary);
+                    boundaries.add(npcOrBound);
                 } else {
                     if (objectClass.equals("Harkonnen1")) {
-                        Rectangle personalBounds = new Rectangle(enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44);
-                        enemies.add(new HarkonnenEasy(enemyOrBoundary.getName(), this, personalBounds));
+                        Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
+                        npcs.add(new HarkonnenEasy(npcOrBound.getName(), this, personalBounds));
                     } else if (objectClass.equals("Harkonnen2")) {
-                        Rectangle personalBounds = new Rectangle(enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44);
-                        enemies.add(new HarkonnenMedium(enemyOrBoundary.getName(), this, personalBounds));
+                        Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
+                        npcs.add(new HarkonnenMedium(npcOrBound.getName(), this, personalBounds));
                     } else if (objectClass.equals("Harkonnen3")) {
-                        Rectangle personalBounds = new Rectangle(enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44);
-                        enemies.add(new HarkonnenHard(enemyOrBoundary.getName(), this, personalBounds));
+                        Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
+                        npcs.add(new HarkonnenHard(npcOrBound.getName(), this, personalBounds));
                     } else if (objectClass.equals("Piter")) {
-                        Rectangle personalBounds = new Rectangle(enemyOrBoundary.getRectangle().getX(), enemyOrBoundary.getRectangle().getY(), 44, 44);
-                        enemies.add(new Piter(enemyOrBoundary.getName(), this, personalBounds));
+                        Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
+                        npcs.add(new Piter(npcOrBound.getName(), this, personalBounds));
                     } else {
-                        Gdx.app.debug(TAG, "Unable to find objec through class:: classid: " + objectClass + " | name: " + enemyOrBoundary.getName() + " | bounds: " + enemyOrBoundary.getRectangle().toString());
+                        Gdx.app.debug(TAG, "Unable to find objec through class:: classid: " + objectClass + " | name: " + npcOrBound.getName() + " | bounds: " + npcOrBound.getRectangle().toString());
                     }
                 }
             } else {
-                Gdx.app.debug(TAG, "class id for enemy was null:: name: " + enemyOrBoundary.getName() + " | bounds: " + enemyOrBoundary.getRectangle().toString());
+                Gdx.app.debug(TAG, "class id for enemy was null:: name: " + npcOrBound.getName() + " | bounds: " + npcOrBound.getRectangle().toString());
             }
         }
 
@@ -96,11 +96,11 @@ public class BackTunnels extends Level {
         for (RectangleMapObject boundary : boundaries) {
             try {
                 boolean assigned = false;
-                String enemyName = boundary.getName().substring(0, boundary.getName().indexOf("_boundary"));
-                for (NPC enemy : enemies) {
-                    if (enemy.getId().equals(enemyName)) {
+                String npcName = boundary.getName().substring(0, boundary.getName().indexOf("_boundary"));
+                for (NPC npc : npcs) {
+                    if (npc.getId().equals(npcName)) {
                         assigned = true;
-                        enemy.setActivationBoundary(boundary.getRectangle());
+                        npc.setActivationBoundary(boundary.getRectangle());
                     }
                 }
                 if (!assigned) {
@@ -116,10 +116,10 @@ public class BackTunnels extends Level {
         }
 
         //disable all npcs without bounds, something went wrong
-        for (NPC enemy : enemies) {
-            if (enemy.getActivationBoundary() == null) {
-                enemy.setEnabled(false);
-                Gdx.app.debug(TAG, "enemy has no activitation boundary, is being disabled:: id: " + enemy.getId());
+        for (NPC npc : npcs) {
+            if (npc.getActivationBoundary() == null) {
+                npc.setEnabled(false);
+                Gdx.app.debug(TAG, "enemy has no activitation boundary, is being disabled:: id: " + npc.getId());
             }
         }
 
@@ -180,9 +180,9 @@ public class BackTunnels extends Level {
     public void drawLevelAssets(float delta) {
         paulAtreides.draw(delta);
 
-        for (NPC enemy : enemies) {
-            if (enemy.isEnabled()) {
-                enemy.draw(delta);
+        for (NPC npc : npcs) {
+            if (npc.isEnabled()) {
+                npc.draw(delta);
             }
         }
 
@@ -218,8 +218,8 @@ public class BackTunnels extends Level {
     }
 
     @Override
-    public ArrayList<NPC> getEnemies() {
-        return enemies;
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
     }
 
     @Override
