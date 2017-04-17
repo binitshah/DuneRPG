@@ -204,8 +204,8 @@ public class FirstFremanCave extends Level {
 
     @Override
     public void endLevel() {
-        BackTunnels testingNextLevel = new BackTunnels(game);
-        game.setScreen(testingNextLevel);
+        SecondFremenCave nextLevel = new SecondFremenCave(game);
+        game.setScreen(nextLevel);
     }
 
     @Override

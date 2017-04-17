@@ -208,8 +208,8 @@ public abstract class Player {
         checkItemsLayerForCollisions();
         if (level.getMapName().equals("cave.tmx")) {
             checkCaveOtherLayerForCollisions();
-        } else if (level.getMapName().equals("tunnels.tmx")) {
-            checkTunnelsOtherLayerForCollisions();
+        } else {
+            checkOtherLayerForCollisions();
         }
     }
 
@@ -237,7 +237,7 @@ public abstract class Player {
         }
     }
 
-    private void checkTunnelsOtherLayerForCollisions() {
+    private void checkOtherLayerForCollisions() {
         for (RectangleMapObject rectangleObject : otherObjects.getByType(RectangleMapObject.class)) {
             Rectangle otherRec = rectangleObject.getRectangle();
             Rectangle playerRec = new Rectangle(level.getCamera().position.x + playerBounds[0], level.getCamera().position.y + playerBounds[1], playerBounds[2], playerBounds[3]);

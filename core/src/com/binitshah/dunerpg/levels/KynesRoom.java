@@ -10,6 +10,8 @@ import com.binitshah.dunerpg.DuneRPG;
 import com.binitshah.dunerpg.characters.HarkonnenEasy;
 import com.binitshah.dunerpg.characters.HarkonnenHard;
 import com.binitshah.dunerpg.characters.HarkonnenMedium;
+import com.binitshah.dunerpg.characters.Jessica;
+import com.binitshah.dunerpg.characters.Kynes;
 import com.binitshah.dunerpg.characters.NPC;
 import com.binitshah.dunerpg.characters.PaulAtreides;
 import com.binitshah.dunerpg.characters.Piter;
@@ -73,10 +75,10 @@ public class KynesRoom extends Level {
                 } else {
                     if (objectClass.equals("Kynes")) {
                         Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
-                        npcs.add(new HarkonnenEasy(npcOrBound.getName(), this, personalBounds));
+                        npcs.add(new Kynes(npcOrBound.getName(), this, personalBounds));
                     } else if (objectClass.equals("Jessica")) {
                         Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
-                        npcs.add(new HarkonnenMedium(npcOrBound.getName(), this, personalBounds));
+                        npcs.add(new Jessica(npcOrBound.getName(), this, personalBounds));
                     } else {
                         Gdx.app.debug(TAG, "Unable to find objec through class:: classid: " + objectClass + " | name: " + npcOrBound.getName() + " | bounds: " + npcOrBound.getRectangle().toString());
                     }
@@ -189,7 +191,8 @@ public class KynesRoom extends Level {
 
     @Override
     public void endLevel() {
-        //implementation pending
+        BackTunnels nextlevel = new BackTunnels(game);
+        game.setScreen(nextlevel);
     }
 
     @Override

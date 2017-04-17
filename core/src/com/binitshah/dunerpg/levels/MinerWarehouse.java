@@ -7,12 +7,15 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.binitshah.dunerpg.DuneRPG;
-import com.binitshah.dunerpg.characters.HarkonnenEasy;
-import com.binitshah.dunerpg.characters.HarkonnenHard;
-import com.binitshah.dunerpg.characters.HarkonnenMedium;
+import com.binitshah.dunerpg.characters.FremenEasy;
+import com.binitshah.dunerpg.characters.FremenHard;
+import com.binitshah.dunerpg.characters.FremenHardest;
+import com.binitshah.dunerpg.characters.FremenMedium;
 import com.binitshah.dunerpg.characters.NPC;
 import com.binitshah.dunerpg.characters.PaulAtreides;
-import com.binitshah.dunerpg.characters.Piter;
+import com.binitshah.dunerpg.characters.SmugglerEasy;
+import com.binitshah.dunerpg.characters.SmugglerHard;
+import com.binitshah.dunerpg.characters.SmugglerMedium;
 import com.binitshah.dunerpg.item.Item;
 import com.binitshah.dunerpg.item.LargeFood;
 import com.binitshah.dunerpg.item.LargeSpice;
@@ -31,12 +34,10 @@ import com.binitshah.dunerpg.item.Thumper;
 import java.util.ArrayList;
 
 /**
- * Created by binitshah on 4/14/17.
- *
- * The caves that Paul uses to escape from the harkonnen.
+ * Created by binitshah on 4/17/17.
  */
 
-public class BackTunnels extends Level {
+public class MinerWarehouse extends Level {
 
     //Logging
     private final String TAG = "LOGDUNERPG"; //todo: remove
@@ -47,7 +48,7 @@ public class BackTunnels extends Level {
     //Information
     private static final float WIDTH = 960;
     private static final float HEIGHT = 640;
-    private static String mapName = "tunnels.tmx";
+    private static String mapName = "miner.tmx";
     private static float[] clearColors = new float[]{0, 0, 0, 1};
     private static int splitLayer = 100; //the layer at which the sprites are drawn before the layer so that the layers appear on top the sprites.
     private static float[] mapSpecificPlayerValues = {-22, -22, 44, 44, 4, 6};
@@ -57,35 +58,28 @@ public class BackTunnels extends Level {
     private ArrayList<NPC> npcs;
     private ArrayList<Item> items;
 
-    public BackTunnels(DuneRPG game) {
-        super(mapName, BackTunnels.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
+    public MinerWarehouse(DuneRPG game) {
+        super(mapName, MinerWarehouse.findSpawnPoint(mapName), clearColors, WIDTH, HEIGHT, splitLayer);
         this.game = game;
         this.paulAtreides = new PaulAtreides(this, mapSpecificPlayerValues);
 
+
         //load npcs
         npcs = new ArrayList<NPC>();
-        ArrayList<RectangleMapObject> boundaries = new ArrayList<RectangleMapObject>();
         for (RectangleMapObject npcOrBound : getTiledMap().getLayers().get(getLayer("npcs")).getObjects().getByType(RectangleMapObject.class)) {
             String objectClass = (String) npcOrBound.getProperties().get("class");
             if (objectClass != null) {
-                if (objectClass.equals("boundary")) {
-                    boundaries.add(npcOrBound);
+                if (objectClass.equals("Smuggler1")) {
+                    Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
+                    npcs.add(new SmugglerEasy(npcOrBound.getName(), this, personalBounds));
+                } else if (objectClass.equals("Smuggler2")) {
+                    Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
+                    npcs.add(new SmugglerMedium(npcOrBound.getName(), this, personalBounds));
+                } else if (objectClass.equals("Smuggler3")) {
+                    Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
+                    npcs.add(new SmugglerHard(npcOrBound.getName(), this, personalBounds));
                 } else {
-                    if (objectClass.equals("Harkonnen1")) {
-                        Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
-                        npcs.add(new HarkonnenEasy(npcOrBound.getName(), this, personalBounds));
-                    } else if (objectClass.equals("Harkonnen2")) {
-                        Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
-                        npcs.add(new HarkonnenMedium(npcOrBound.getName(), this, personalBounds));
-                    } else if (objectClass.equals("Harkonnen3")) {
-                        Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
-                        npcs.add(new HarkonnenHard(npcOrBound.getName(), this, personalBounds));
-                    } else if (objectClass.equals("Piter")) {
-                        Rectangle personalBounds = new Rectangle(npcOrBound.getRectangle().getX(), npcOrBound.getRectangle().getY(), 44, 44);
-                        npcs.add(new Piter(npcOrBound.getName(), this, personalBounds));
-                    } else {
-                        Gdx.app.debug(TAG, "Unable to find objec through class:: classid: " + objectClass + " | name: " + npcOrBound.getName() + " | bounds: " + npcOrBound.getRectangle().toString());
-                    }
+                    Gdx.app.debug(TAG, "Unable to find objec through class:: classid: " + objectClass + " | name: " + npcOrBound.getName() + " | bounds: " + npcOrBound.getRectangle().toString());
                 }
             } else {
                 Gdx.app.debug(TAG, "class id for enemy was null:: name: " + npcOrBound.getName() + " | bounds: " + npcOrBound.getRectangle().toString());
@@ -93,7 +87,7 @@ public class BackTunnels extends Level {
         }
 
         //assign boundaries to npcs
-        for (RectangleMapObject boundary : boundaries) {
+        for (RectangleMapObject boundary : getTiledMap().getLayers().get(getLayer("boundary")).getObjects().getByType(RectangleMapObject.class)) {
             try {
                 boolean assigned = false;
                 String npcName = boundary.getName().substring(0, boundary.getName().indexOf("_boundary"));
@@ -195,7 +189,7 @@ public class BackTunnels extends Level {
 
     @Override
     public void endLevel() {
-        SmugglerDesert nextlevel = new SmugglerDesert(game);
+        FirstFremanCave nextlevel = new FirstFremanCave(game);
         game.setScreen(nextlevel);
     }
 
@@ -207,13 +201,15 @@ public class BackTunnels extends Level {
     @Override
     public int getLayer(String layerName) {
         if (layerName.equals("npcs")) {
-            return 2;
+            return 7;
         } else if (layerName.equals("walls")) {
-            return 3;
+            return 1;
         } else if (layerName.equals("items")) {
-            return 4;
+            return 6;
         } else if (layerName.equals("other")) {
-            return 5;
+            return 9;
+        } else if (layerName.equals("boundary")) {
+            return 8;
         }
         return -1;
     }
@@ -232,7 +228,7 @@ public class BackTunnels extends Level {
         try {
             TmxMapLoader tmxMapLoader = new TmxMapLoader();
             TiledMap tiledMap = tmxMapLoader.load(mapName);
-            RectangleMapObject rectangleMapObject = ((RectangleMapObject) tiledMap.getLayers().get(5).getObjects().get("Spawn_Point"));
+            RectangleMapObject rectangleMapObject = ((RectangleMapObject) tiledMap.getLayers().get(9).getObjects().get("Spawn_Point"));
             return new Vector2(rectangleMapObject.getRectangle().getX() + rectangleMapObject.getRectangle().getWidth()/2, rectangleMapObject.getRectangle().getY() + rectangleMapObject.getRectangle().getHeight()/2);
         } catch (Exception e) {
             return null;
